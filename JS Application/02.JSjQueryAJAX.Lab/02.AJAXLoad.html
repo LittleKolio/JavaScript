@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Load</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="text">
+        <h1>AJAX jQuery.load()</h1>
+        <button onclick="loadTitle()">Load Title</button>
+    </div>
+    <script>
+        function loadTitle() {
+            $('#text').load('02.AJAXLoad_text.html');
+        }
+    </script>
+    <!-- Handling Errors
+    <script>
+        $(document).ajaxError(function(event, req, settings) {
+            $('#text').text(
+                    `Error loading data: ` +
+                    `${req.status} (${req.statusText})`
+            );
+        });
+        function loadTitle() {
+            $('#text').load("http://dir.bg");
+        }
+    </script>
+    -->
+</body>
+</html>

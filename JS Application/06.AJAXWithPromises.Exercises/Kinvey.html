@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Maikati</h1>
+<script>
+    let appKey = 'kid_S14Snagze';
+    let appSecret = 'e30c6f89209247149fa00ba4cd9dbdb2';
+    let urlUser =  'https://baas.kinvey.com/user/' + appKey;
+    let urlApp = 'https://baas.kinvey.com/appdata/' + appKey + '/comments';
+    let tokenBasic = 'Basic ' + btoa(appKey + ':' + appSecret);
+    $.ajax({
+        method: 'POST',
+        url: urlUser,
+        headers: {
+            'Authorization': tokenBasic,
+            'Content-Type': 'application/json',
+            'username': 'peter',
+            'password': 'peter'
+        }
+    })
+            .then(function(data) {
+                let tokenKinvey = 'Kinvey ' + data._kmd.authtoken;
+                $.ajax({
+                    method: 'GET',
+                    url: urlApp,
+                    headers: {
+                        'Authorization': tokenKinvey,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                        .then(function(data) {
+                            console.log(data);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+</script>
+</body>
+</html>

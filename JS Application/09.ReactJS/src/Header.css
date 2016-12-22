@@ -1,0 +1,13 @@
+.Header {
+    background-color: #7CB3E9;
+}
+
+.Header a {
+    display: inline-block;
+    margin: 10px;
+    text-decoration: none;
+}
+
+.Header a:hover {
+    background-color: #333333;
+}
