@@ -1,0 +1,14 @@
+.chessboard {
+    display: block;
+}
+.black, .white {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+.black {
+    background: brown;
+}
+.white {
+    background: gainsboro;
+}
