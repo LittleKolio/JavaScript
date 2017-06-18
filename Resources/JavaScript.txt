@@ -1,0 +1,3970 @@
+
+─ │ ═ ║
+
+┌ ┐ └ ┘ ┬ ┴ ├ ┤ ┼
+
+╔ ╗ ╚ ╝ ╦ ╩ ╠ ╣ ╬
+
+╒ ╕ ╘ ╛ ╤ ╧ ╞ ╡ ╪
+
+╓ ╖ ╙ ╜ ╥ ╨ ╟ ╢ ╫
+
+▀ ▄ █ ▌ ▐ ░ ▒ ▓ ■ □ ▪ ▫ ▬ ▲ ► ▼ ◄ ◊ ○ ☺ ☻
+██
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─
+╟─┐
+╟─┬─────────────────────────────────────────────────────────────────────┐
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│
+	├─────────────────────────────────────────────────────────────────────┘
+	├─
+	├─┐
+	├─┬───────────────────────────────────────────────────────────────────┐
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			├─┬───────────────────────────────────────────────────────────────┐
+				│
+				├───────────────────────────────────────────────────────────────┘
+				├─┬─────────────────────────────────────────────────────────────┐
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║	use strict
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Strict mode makes several changes to normal JavaScript semantics. First, strict mode eliminates some JavaScript silent errors by changing them to throw errors. Second, strict mode fixes mistakes that make it difficult for JavaScript engines to perform optimizations: strict mode code can sometimes be made to run faster than identical code that's not strict mode. Third, strict mode prohibits some syntax likely to be defined in future versions of ECMAScript.
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Invoking strict mode
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Strict mode applies to entire scripts or to individual functions. It doesn't apply to block statements enclosed in {} braces; attempting to apply it to such contexts does nothing. eval code, Function code, event handler attributes, strings passed to WindowTimers.setTimeout(), and the like are entire scripts, and invoking strict mode in them works as expected.
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Strict mode for scripts
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ To invoke strict mode for an entire script, put the exact statement "use strict"; (or 'use strict';) before any other statements.
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║	browser
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┐
+	in browser console after paste function
+	document.body.innerHTML = functionName()
+	document.write(string);
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	>> let array = [10, 20, 2, 76, 30, 437];
+	>> console.dir(array);
+	0:10
+	1:20
+	2:2
+	3:76
+	4:30
+	5:437
+	length:6
+	__proto__:Array[0]
+	
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	>> console.log(array);
+	Array [ 10, 20, 2, 76, 30, 437 ]
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║	HTML escaping
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┐
+	String.prototype.htmlEscape = function() {
+	  return this.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+	}
+    
+╟─┬────────────────────────────────────────────────────────────────HTML─┐
+	function htmlEscape(text) {
+		text = new String(text);
+		let map = {'"': '&quot;', '&': '&amp;', "'": '&#39;',
+		'<': '&lt;', '>': '&gt;'};
+		return text.replace(/[\"&'<>]/g, ch => map[ch]);
+	}
+╔═══════════════════════════════════════════════════════════════════════╗
+║	switch() {case:}
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┐
+	switch (true) {
+		case (x > 1 && x < 50):
+			console.log('success');
+			break;
+		default:
+			console.log('error');
+			break;
+	}
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║	for() / .forEach()
+╠═══════════════════════════════════════════════════════════════════════╝	
+╟─┬─────────────────────────────────────────────────────────────────for─┐
+	for (let element of array)
+	for (let index in array)
+	for (let i = 0; i <= array.length - 1; i++)
+	for (let i = 0, j = array.length; i < j; i++) {
+╟─┬─────────────────────────────────────────────────────────────────for─┐
+	├─ method executes a provided function once per array element
+	├─┬───────────────────────────────────────────────────────────────────┘
+		array.forEach(function())
+		array.forEach((element, index) => {})
+
+╟─┬─────────────────────────────────────────────────────────────────for─┐
+	├─ Object.keys()
+	├─┬───────────────────────────────────────────────────────────────────┘
+		Object.keys(myObjNmae).forEach(function (key) {
+			let obj = myObj[key];
+			// do something with obj
+		});
+		
+╟─├─ using a generator function
+	├─┬───────────────────────────────────────────────────────────────for─┐
+		function* entries(obj) {
+			 for (let key of Object.keys(obj)) {
+				 yield [key, obj[key]];
+			 }
+		}
+
+╟─├─ an alternative version using a generator expression
+	├─┬───────────────────────────────────────────────────────────────for─┐
+		function entries(obj) {
+			 return (
+				for (key of Object.keys(obj))
+					[key, obj[key]]
+			 );
+		}
+		
+╟─├─┬───────────────────────────────────────────────────────────────for─┐
+	for (let [key, value] of entries(myObj)) {
+		 // do something with key|value
+	}
+╔═══════════════════════════════════════════════════════════════════════╗
+║*this
+╠═══════════════════════════════════════════════════════════════════════╝	
+╟─ The value of this is dynamic in JavaScript. The function context is the object that 'owns' the currently executed code, Function context == 'this' object. Depends on how the function is invoked
+
+╟─┬────────────────────────────────────────────────────────────────this─┐
+	│Global invoke
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		function nameFunc() { console.log(this); }
+		nameFunc(); // Window ('this' is the global context)
+		
+	├─┬──────────────────────────────────────────────────────────────this─┐
+		function nameFunc() { 'use strict'; console.log(this); }
+		nameFunc(); // undefined ("this" is missing) 
+	
+╟─┬────────────────────────────────────────────────────────────────this─┐
+	│*Function Context (*this) / call() / apply() / bind()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ The value of 'this' is dynamic in JavaScript. It is determined when function is called, not when it is declared. Any function may use 'this'. It doesn’t matter if the function is assigned to the object or not. The real value of 'this' is evaluated in the call time.
+	
+	├─┬──────────────────────────────────────────────────────────────this─┐
+		│1. when called as a method
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let johnObj = {firstName: 'John'}
+			function nameFunc() {alert(this.firstName + 'say hi!')}
+			johnObj.sayHi = nameFunc
+			johnObj.sayHi() // 'John say hi!' // this = 'John'
+			
+		├─┬────────────────────────────────────────────────────────────this─┐
+			let obj = {
+				name: 'Todor',
+				getName: function () {
+					return this.name;  // 'this' refers to 'obj'
+				}
+			};
+			console.log(obj.getName()); // Todor
+		
+		├─┬────────────────────────────────────────────────────────██──this─┐
+			│nested function
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				function outer() {
+					console.log(this); // Object {name: 'Peter'}
+					
+					let inner1 = () => {
+						console.log(this); // Object {name: 'Peter'}
+					}
+					inner1();
+					
+					function inner2() {
+						console.log(this); // Window защото няма return
+					}
+					inner2();
+					
+				}
+				
+				let obj = { name: 'Peter', func: outer }
+				obj.func();
+				// Object {name: 'Peter'}
+				// Object {name: 'Peter'}
+				// Window защото няма return
+
+			├─┬──────────────────────────────────────────────────────██──this─┐
+				function outer() {
+					let outerThis = this;
+					console.log(this); // Object {name: 'Peter'}
+					function inner() {
+						console.log(outerThis); // Object {name: 'Peter'}
+					}
+					inner();
+				}
+				
+				let obj = { name: 'Peter', func: outer }
+				obj.func();
+				// Object {name: 'Peter'}
+				// Object {name: 'Peter'}
+	
+
+			
+	├─┬──────────────────────────────────────────────────────────────this─┐
+		│2. when called as a function
+		├───────────────────────────────────────────────────────────────────┘
+		├─ If a function uses 'this' is usually a bug. When there is no context, 'this' becomes 'window'. In the modern language specification, this behavior is altered, and this = undefined.
+		├─┬────────────────────────────────────────────────────────────this─┐
+			function nameFunc() { (this) }
+			// [object Window] or [object global] or kind of..
+			// undefined in Firefox 4
+			
+		├─┬────────────────────────────────────────────────────────────this─┐
+			let obj = {go: function() {alert(this)}}
+			
+			obj.go() // object
+			(obj.go)() // object
+			(a = obj.go)() // window
+			(0 || obj.go)() // window
+	
+	├─┬──────────────────────────────────────────────────────────────this─┐
+		│3. in new
+		├───────────────────────────────────────────────────────────────────┘
+		├─ An object can be created literally, using obj = { ... } syntax. Another way of creating an object in JavaScript is to construct it by calling a function with 'new' directive.
+		├─┬────────────────────────────────────────────────────────────this─┐
+			function Animal(name) {
+				this.name = name;
+				this.canFly = 'not anymore';
+			}
+			
+			let duck = new Animal('roast duck')
+			alert(duck.name)
+			├─ The function constructs an object by modifying 'this'.
+			├─┬──────────────────────────────────────────────────────────this─┐
+				duck = {name: 'roast duck', canFly: 'not anymore'}
+
+	├─┬──────────────────────────────────────────────────────────────this─┐
+		│4. explicit
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬────────────────────────────────────────────────────────────this─┐
+			│call()
+			├─────────────────────────────────────────────────────────────────┘
+			├─ The first argument of call becomes 'this', other arguments arg1, arg2... become arguments.
+			├─┬──────────────────────────────────────────────────────────this─┐
+				nameFunc.call(thisArg, arg1, arg2, ...);
+				
+			├─┬──────────────────────────────────────────────────────────this─┐
+				let mariaObj = {
+					firstName: 'Maria',
+					surname: 'Ivanova',
+					text: function(str) {
+						alert(this.firstName + ' says hello ' + str);
+					}
+				}
+				mariaObj.text('world'); // Maria says hello world
+
+				let ivanObj = { firstName: 'Ivan' };
+				
+				mariaObj.text.call(ivanObj, 'now');
+				// Ivan says hello now
+			├─┬──────────────────────────────────────────────────────────this─┐
+				function sayFunc(strA, strB) {
+					alert(this[strA] + this[strB] + ' says goodbye!');
+				}
+				sayFunc.call(mariaObj, 'firstName', 'surname');
+				// Maria Ivanova says goodbye!
+				
+		├─┬────────────────────────────────────────────────────────────this─┐
+			│apply()
+			├─────────────────────────────────────────────────────────────────┘
+			├─ The .apply is same as .call, but it accepts an array of arguments instead of a list.
+			├─┬──────────────────────────────────────────────────────────this─┐
+				nameFunc.apply(thisArg, [arg1, arg2, ...]);
+				
+				mariaObj.text.apply(ivanObj, ['again']);
+				// Ivan says hello again
+				
+			├─┬──────────────────────────────────────────────────────██──this─┐
+				│Math.max or Math.min for Array
+				├───────────────────────────────────────────────────────────────┘
+				├─┐
+					Math.max([1,4,6,2,-6,44]) // NaN
+					Math.max.apply(null, [1,4,6,2,-6,44]) // 44
+					
+	├─┬──────────────────────────────────────────────────────────────this─┐
+		│bind()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ creates a new function that, when called, has its this keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
+		├─┬────────────────────────────────────────────────────────────this─┐
+			let ivanSaid = mariaObj.text.bind(ivanObj);
+			ivanSaid('from me');
+			// Ivan says hello from me
+			
+╟─┬────────────────────────────────────────────────────────────────this─┐
+	Object.prototype.each = function(f) {
+		for(var prop in this) {
+			if (Object.prototype.hasOwnProperty(prop)) continue // filter
+			var value = this[prop]
+			f.call(value, prop, value)
+		}
+	}
+	var obj = { name: 'John', age: 25 }
+	obj.each(function(prop, val) {
+		alert(prop)
+	})
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Function
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ In JavaScript, functions are first-class objects, because they can have properties and methods just like any other object. What distinguishes them from other objects is that functions can be called. In brief, they are Function objects.
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	nameFunc.length // numbers of arguments
+
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	new Function ('arg1', 'arg2', ...'argN', 'return functionBody')
+	new Function (' arg1, arg2, ...argN ', 'return functionBody')
+	
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	│*statement / declaration
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ A Function Declaration defines a named function variable without requiring variable assignment. Function Declarations occur as standalone constructs and cannot be nested within non-function blocks. It’s helpful to think of them as siblings of Variable Declarations. Just as Variable Declarations must start with 'var'/'let', Function Declarations must begin with 'function'.
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function nameFunc(arg1, arg2, ... argN) { body }
+		
+	
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	│*expression
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ A Function Expression defines a function as a part of a larger expression syntax (typically a variable assignment). Functions defined via Functions Expressions can be named or anonymous. Function Expressions must not start with 'function' (hence the parentheses around the IIFE). A Function Expression can be used as a IIFE which runs as soon as it is defined.
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		let bar = function() { body }; // anonymous
+		let bar = function foo() { body }; // named
+		(function foo() { body })(); // self invoking
+		
+╟─┬───────────────────────────────────────────██─██──DecVsExp──Function─┐
+	│Function Declarations vs. Function Expressions
+	├─┬───────────────────────────────────────────────────────────────────┘
+		function foo(){
+			function bar() { return 3; } // define bar once
+			return bar();
+			function bar() { return 8; } // redefine it
+		}
+		foo(); // 8
+		foo; // function
+		├─██ (Ben Cherry) Function declarations and function variables are always moved (hoisted) to the top of their JavaScript scope by the JavaScript interpreter.
+		├─██ In JavaScript execution there is Context (which ECMA 5 breaks into LexicalEnvironment, VariableEnvironment and ThisBinding) and Process (a set of statements to be invoked in sequence). Declarations contribute to the VariableEnvironment when the execution scope is entered. They are distinct from Statements (such as return) and are not subject to their rules of process. ? WTF ?
+		
+	├─┬────────────────────────────────────────────────DecVsExp──Function─┐
+		function foo(){
+			var bar = function() { return 3; } // define bar once
+			return bar();
+			var bar = function() { return 8; } // unreachable
+		}
+		foo(); // 3
+		├─██ The left hand side (var bar) is a Variable Declaration. Variable Declarations get hoisted but their Assignment Expressions don’t. So when bar is hoisted the interpreter initially sets var bar = undefined. The function definition itself is not hoisted.
+		├─┬──────────────────────────────────────────────DecVsExp──Function─┐
+			│Simulated processing sequence
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				function foo(){
+					//a declaration for each function expression
+					var bar = undefined;
+					var bar = undefined;
+					//first Function Expression is executed
+					bar = function() { return 3; };
+					// Function created by first Function Expression is invoked
+					return bar();
+					// second Function Expression unreachable
+				}
+				
+	├─┬────────────────────────────────────────────────DecVsExp──Function─┐
+		function foo(){
+			return bar();
+			let bar = function() { return 3; }
+			let bar = function() { return 8; }
+		}
+		foo(); // bar is not a function
+		├─┬──────────────────────────────────────────────DecVsExp──Function─┐
+			│Simulated processing sequence
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				function foo(){
+					// declaration for each function expression
+					var bar = undefined;
+					var bar = undefined;
+					return bar(); //TypeError: 'bar not defined'
+					//neither Function Expression is reached
+				}
+	┌──────────────────────────────────────────────────DecVsExp──Function─┐
+	├─██ Function Declarations are officially prohibited within non-function blocks (such as if).
+	├─┬────────────────────────────────────────────────DecVsExp──Function─┐
+		function foo() {
+			if (false) { function x() {}; }
+			return x;
+		}
+		foo();
+	┌──────────────────────────────────────────────────DecVsExp──Function─┐
+	├─██ If you want to create an anonymous function or assign a function to a prototype or as a property of some other object you need a Function Expression. Whenever you create a new function using a high order application such as curry or compose you are using a Function Expression.
+	
+	├─ Typically functions created by Function Expressions are unnamed. For instance the following function is anonymous, 'today' is just a reference to an unnamed function:
+	├─┬────────────────────────────────────────────────DecVsExp──Function─┐
+		var today = function() {return new Date()}
+		├─ but debugging with anonymous functions can be frustrating. Using Named Function Expressions (NFEs) as a workaround
+		├─┬──────────────────────────────────────────────DecVsExp──Function─┐
+			var today = function today() {return new Date()}
+			
+	┌──────────────────────────────────────────────────DecVsExp──Function─┐
+	├─██ Badly placed Function Declarations are misleading and there are few (if any) situations where you can’t use a Function Expression assigned to a variable instead. However if you must use Function Declarations, it will minimize confusion if you place them at the top of the scope to which they belong. I would never place a Function Declarations in an if statement.
+	
+	├─┬──────────────────────────────────────────────────────██──Function─┐
+		let last = function() { console.error('last'); }
+		invokeAll([
+			() => console.info('first'),
+			() => console.warn('second'),
+			last
+		]);
+		function invokeAll(funcArr) { 
+			for (let func of funcArr)
+				func();
+		}
+
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function reduce(arr, func) {
+			let result = arr[0];
+			for (let nextElement of arr.slice(1))
+				result = func(result, nextElement);
+			return result;
+		}
+		reduce([5, 10, 20], (a,b) => a + b); // 35
+		reduce([5, 10, 20], (a,b) => a * b); // 1000
+
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	│function arguments
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ You can call a function without passing the parameters it expects, in which case they will be set to undefined.
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		add(); // NaN
+		
+	├─ You can also pass in more arguments than the function is expecting.
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		add(2, 3, 4); // 5 (4 was ignored)
+	
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function printStars(count = 5) {
+			console.log('*'.repeat(count));
+		}
+		
+	├─ functions have access to an additional variable inside their body called arguments, which is an array-like object holding all of the values passed to the function.
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function add() {
+			var sum = 0;
+			for (var i = 0, j = arguments.length; i < j; i++) {
+				sum += arguments[i];
+			}
+			return sum;
+		}
+		add(2, 3, 4, 5); // 14
+
+		├─ To diminish this code a bit more we can look at substituting the use of the arguments array through Spread syntax. The spread operator is used in function declarations with the format: ...variable and it will include within that variable the entire list of uncaptured arguments that the function was called with.  We will also replace the for loop with a for...of loop to return the values within our variable.
+		├─┬────────────────────────────────────────────────────██──Function─┐
+			function avg(...args) {
+				var sum = 0;
+				for (let value of args) {
+					sum += value;
+				}
+				return sum / args.length;
+			}
+			avg(2, 3, 4, 5); // 3.5
+			avg.apply(null, [2, 3, 4, 5]); // 3.5
+			
+		┌──────────────────────────────────────────────────────────Function─┐
+		├─ this will store the first value passed into the function in the firstValue variable and the remaining arguments in args[]
+		├─┬────────────────────────────────────────────────────────Function─┐
+			function avg(firstValue, ...args)
+
+	├─┬──────────────────────────────────────────────────────██──Function─┐
+		function nameFunc([arg1, , , arg4]) {}
+		nameFunc([arg1, arg2, arg3, arg4, arg5])
+	
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	│recursion
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ JavaScript allows you to call functions recursively. This is particularly useful for dealing with tree structures, such as those found in the browser DOM.
+	└─┬──────────────────────────────────────────────────────────Function─┐
+		function countChars(elm) {
+			if (elm.nodeType == 3) { // TEXT_NODE
+				return elm.nodeValue.length;
+			}
+			var count = 0;
+			for (var i = 0, child; child = elm.childNodes[i]; i++) {
+				count += countChars(child);
+			}
+			return count;
+		}
+		
+	├─ This highlights a potential problem with anonymous functions: how do you call them recursively if they don't have a name? JavaScript lets you name function expressions for this. You can use named IIFEs (Immediately Invoked Function Expressions)
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		var charsInBody = (function counter(elm) {
+			if (elm.nodeType == 3) { // TEXT_NODE
+				return elm.nodeValue.length;
+			}
+			var count = 0;
+			for (var i = 0, child; child = elm.childNodes[i]; i++) {
+				count += counter(child);
+			}
+			return count;
+		})(document.body);
+
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		│recursion ( toString() / valueOf() )
+		├─┬─────────────────────────────────────────────────────────────────┘
+			function solve() {
+					let sum = 0;
+					function add(num) {
+							sum += num;
+							return add;
+					}
+					add.toString = () => sum;
+					return add;
+			}
+			let add = solve();
+
+			console.log('' + add(1)(6)(-3)); // 4
+			console.log(add(1)(6)(-3).toString()); // 8
+			
+		├─┬────────────────────────────────────────────────────────Function─┐
+			function solve() {
+					let sum = 0; 
+					function add(num) {
+							sum += num;
+							return add;
+					}
+					add.valueOf = () => sum;
+					return add;
+			}
+			let add = solve();
+
+			console.log(+ add(1)(6)(-3));
+			console.log(add(1)(6)(-3).valueOf());
+			
+		├─┬────────────────────────────────────────────────────────Function─┐
+			function solve(num) {
+				let add = (num2) => solve(num + num2);
+				sdd.toString = () => num;
+				return add;
+			}
+			console.log(solve(1)(6)(-3).toString());
+			
+			
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	(arrayName) => arrayName.filter(
+		(element, index) => index % 2 == 0
+	).join(' ');
+	
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	│function as argument
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		function nameFunc(input) {
+			function repeat(count, func) {
+				for (let i = 1; i <= count; i++)
+					func(i);
+			}
+			let stars = function (i) {
+				console.log('**'.repeat(i));
+			}
+			repeat(input, stars);
+			repeat(input, function (i) {
+				console.log(2 * i);
+			})
+		}
+		
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	function calculator([x, y, op]) {
+		let [a, b] = [x, y].map(Number);
+		switch (op) {
+			case '+': return calc(a, b, sum); break;
+			case '-': return calc(a, b, sub); break;
+			case '*': return calc(a, b, mul); break;
+			case '/': return calc(a, b, div); break;
+		}
+		
+		let calc = function(a, b, op) {return op(a, b);};
+		
+		let sum = function(a, b) {return a + b;};
+		let sub = function(a, b) {return a - b;};
+		let mul = function(a, b) {return a * b;};
+		let div = function(a, b) {return a / b;};
+	}
+╟─┬──────────────────────────────────────────────────────IIFE──Function─┐
+	│immediately-invoke function expression(IIFE)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Because variables and functions defined within a function may only be accessed inside, but not outside, that context, invoking a function provides a very easy way to create privacy.
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		(function () { statements })()
+		(function () { statements }())
+		
+		
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		let outObj = (function () {
+			let innerObj = {};
+			return innerObj
+		}());
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function nameFunc() {
+			let innerObj = {};
+			return innerObj
+		}
+		let outObj = nameFunc();
+		
+		
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		(function (num) {
+			for (let i = 1; i <= num; i++)
+				console.log('+'.repeat(i));
+		})(input);
+	
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	│closure
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐ 
+		function counter() {
+			let num = 0;
+			function getNextCount() {
+				console.log(++num);
+			};
+			return getNextCount;
+		}
+		let counter = (function () {
+			let num = 0;
+			return function () {
+				console.log(++num);
+			}
+		})();
+		let counter = (() => {
+			let num = 0;
+			return () => console.log(++num);
+		})();
+
+
+
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function commandProcess(input) {
+			let proces = (function () {
+				let result = '';
+				return {
+					append: (text) => result += text,
+					removeStart: (num) => result = result.slice(Number(num)),
+					removeEnd: (num) => result = result.slice(0, result.length - Number(num)),
+					print: () => console.log(result)
+				}
+			})();
+			for (let el of input) {
+				let [func, arg] = el.split(' ');
+				proces[func](arg);
+			}
+		}
+
+		commandProcess([
+			'append hello',
+			'append again',
+			'removeStart 3',
+			'removeEnd 4',
+			'print'
+		]);
+		// loa
+		
+╟─┬────────────────────────────────────────────────────────██──Function─┐
+	function insideVolume(input) {
+		for (let i of emi(input, boolFunc)) {
+			if (i) console.log('inside');
+			else console.log('outside');
+		}
+		let boolFunc = function ([x, y, z]) {
+			[x, y, z] = [x, y, z].map(Number);
+			let boolee = (x >= 10 && x <= 50) &&
+				(y >= 20 && y <= 80) &&
+				(z >= 15 && z <= 50);
+			return boolee;
+		};
+		function emi(inputArray, boolFunc) {
+			let boolArray = [];
+			let count = 3;
+			for (let i = 0; i < inputArray.length; i += count)
+				boolArray.push(boolFunc(inputArray.slice(i, i + count)));
+			return boolArray;
+		}
+	}
+
+	insideVolume([
+		13.1, 50, 31.5,
+		50, 80, 50,
+		-5, 18, 43
+	]); // inside, inside, outside
+	
+╟─┬────────────────────────────────────────────────────────██──Function─┐
+	function cooking(input) {
+		let num = Number(input[0]);
+		for (let i = 1; i < input.length; i++) {
+			let temp = operation(input[i]);
+			num = temp(num);
+			console.log(Math.round(num * 10) / 10);
+		}
+		function operation(op) {
+			switch (op) {
+				case 'chop': return function (num) {return num / 2;};
+				case 'dice': return function (num) {return Math.sqrt(num);};
+				case 'spice': return function (num) {return ++num;};
+				case 'bake': return function (num) {return num * 3;};
+				case 'fillet': return function (num) {return num * 0.8;};
+			}
+		}
+	}
+
+	cooking(['32', 'chop', 'chop', 'chop', 'chop', 'chop']) // 16, 8, 4, 2, 1
+	cooking(['9', 'dice', 'spice', 'chop', 'bake', 'fillet']) // 3, 4, 2, 6, 4.8
+	
+	├─┬──────────────────────────────────────────────────────────Function─┐
+		function nameFunc(p) { return function(n) { return something; }; }
+		let var1 = nameFunc(p)
+		├─ в зависимост от 'p' се връща една от анонимните function(n) {} която става стойност на 'var1'
+		n = var1(n) 
+		
+╟─┬────────────────────────────────────────────────────────────Function─┐
+	function helix2(num) {
+		let dna = 'ATCGTTAGGG';
+		let l = dna.length;
+		let index = 0;
+		for (let i = 0; i < num; i++) {
+			let row = i % 4;
+			if (row == 0) {
+				console.log(
+					`**${dna[index++ % l]}${dna[index++ % l]}**`
+				);
+			} else if (row == 1 || row == 3) {
+				console.log(
+					`*${dna[index++ % l]}--${dna[index++ % l]}*`
+				);
+			} else {
+				console.log(
+					`${dna[index++ % l]}----${dna[index++ % l]}`
+				);
+			}
+		}
+	}
+
+	helix(4);
+	/**
+	 **AT**
+	 *C--G*
+	 T----T
+	 *A--G*
+	 */
+	 
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Date&Time
+╠═══════════════════════════════════════════════════════════════════════╝	
+╟─ JavaScript dates are calculated in milliseconds from 01 January, 1970 00:00:00 Universal Time (UTC).
+╟─┬───────────────────────────────────────────────────────────Date&Time─┐
+	new Date(year, month, day, hours, minutes, seconds, milliseconds)
+	
+╟─ One day contains 86,400,000 millisecond.
+╟─┬───────────────────────────────────────────────────────────Date&Time─┐
+	var d = new Date(86400000); // или 24 * 36e+5
+
+╟─┬───────────────────────────────────────────────────────────Date&Time─┐
+	│leapYear
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐	
+		function leapYear([year]) {
+			if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
+				return 'yes';
+			else
+				return 'no';
+		}
+		
+╟─┬───────────────────────────────────────────────────────────Date&Time─┐
+	function nextDay([year, month, day]) {
+		let date = new Date(year, month - 1, day);
+		let oneDay = 24 * 36e+5;
+		let nextDay = new Date(date.getTime() + oneDay);
+		console.log(`${nextDay.getFullYear()}-${nextDay.getMonth() + 1}-${nextDay.getDate()}`)
+	}
+
+╟─┬───────────────────────────────────────────────────────────Date&Time─┐
+	│getDate()
+	├─ Get the day as a number (1-31)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getDay()
+	├─ Get the weekday as a number (0-6)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getFullYear()
+	├─ Get the four digit year (yyyy)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getHours()
+	├─ Get the hour (0-23)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getMilliseconds()
+	├─ Get the milliseconds (0-999)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getMinutes()
+	├─ Get the minutes (0-59)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getMonth()
+	├─ Get the month (0-11)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getSeconds()
+	├─ Get the seconds (0-59)
+	├─────────────────────────────────────────────────────────────────────┤
+	│getTime()
+	├─ Get the time (milliseconds since January 1, 1970)
+	├─────────────────────────────────────────────────────────────────────┤
+ 	
+╟─┬───────────────────────────────────────────────────────────Date&Time─┐
+	│Date Input Parsing Dates
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ If you have a valid date string, you can use the Date.parse() method to convert it to milliseconds.
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Array
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┬───────────────────────────────────────────────────────────────Array─┐
+	├─ Array can hold mixed data
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		var mixedArr = [20, new Date(), 'hello', {x:5, y:8}];
+		
+╟─┬───────────────────────────────────────────────────────────────Array─┐
+	new Array(2) // [undefined x 2]
+
+╟─┬───────────────────────────────────────────────────────────────Array─┐
+	│.slice() / .splice() / .reduce() / .map() / .push() / .pop()
+	│.join() / .shift() / .unshift() / .filter() / .sort()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.slice(start, end + 1)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ връща парче от масива
+		
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			│*Clone
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				let clone = arr.slice(0);
+				
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.splice(index, length)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ взима парче и го изтрива от index до index + count
+	
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.splice(index, length, element1, 2, 3, ... N)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ взима, изтрива ... и добавя element1 до N
+		└─┬───────────────────────────────────────────────────────────Array─┐
+			let nums = [5, 10, 15, 20, 25, 30];
+			nums.splice(3, 2, "twenty", "twenty-five");
+			console.log(nums.join('|')); // 5|10|15|twenty|twenty-five|30
+			
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			│добавяме елементи
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐ 
+				.splice(index, 0, element1, 2, 3, ... N)
+				
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.reduce()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ от много обекти връща един
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			[10, 20, 30].reduce((a, b) => a + b) // 60
+			['10', '20', '30'].reduce((a, b) => a + b) // '102030'
+			
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.map()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ обхожда (преобразува една стойност в друга). method creates a new array with the results of calling a provided function on every element in this array.
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			let nums = ['one', 'two', 'three', 'four'];
+									 012    012    01234    0123
+			let lengths = nums.map(x => x.length);
+			console.log(lengths.join('|')); // 3|3|5|4
+			let lengths = nums.map(x => [x.length, x[0]]);
+			console.log(lengths.join('|')); // 3,o|3,t|5,t|4,f
+			
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.push(element1, 2, 3, ... N)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method adds one or more elements to the end of an array and returns the new length of the array.
+
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.pop()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ взима последния елемент и го изтрива
+		
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.join(string)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ съединява по string и прави стринг
+		
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.shift()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method removes the first element from an array and returns that element. This method changes the length of the array.
+
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.unshift()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ добавя в началото и връща броя елементи
+		
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.filter()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method creates a new array with all elements that pass the test implemented by the provided function.
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			let filteredNums = ['one', 'two', 'three', 'four'];
+			console.log(
+				filteredNums.filter(x => x.startsWith('t')).join('|')
+			); // two|three
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			(arrayName) => arrayName
+				.filter((element, index) => index % 2 == 0)
+				.join(' ');
+				
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.reverse()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method reverses an array in place. The first array element becomes the last and the last becomes the first.
+		
+	├─┬─────────────────────────────────────────────────────────────Array─┐
+		│.sort()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method sorts the elements of an array in place and returns the array. The sort is not necessarily stable. If compareFunction is not supplied, elements are sorted by converting them to strings and comparing strings in Unicode code point order.
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			let nums = [20, 40, 10, 30, 100, 5];
+			nums.sort().join('|');
+			// 10|100|20|30|40|5
+		
+		├─ If compareFunction is supplied, the array elements are sorted according to the return value of the compare function. If a and b are two elements being compared, then:
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			├─ 1.If compareFunction(a, b) is less than 0, sort a < b, i.e. a comes first.
+			├─ 2.If compareFunction(a, b) returns 0, leave a and b unchanged with respect to each other, but sorted with respect to all different elements. Note: the ECMAscript standard does not guarantee this behaviour, and thus not all browsers (e.g. Mozilla versions dating back to at least 2003) respect this.
+			├─ 3.If compareFunction(a, b) is greater than 0, sort b < a.
+			├─ 4.CompareFunction(a, b) must always return the same value when given a specific pair of elements a and b as its two arguments. If inconsistent results are returned then the sort order is undefined.
+			
+		├─┬───────────────────────────────────────────────────────────Array─┐
+			nums.sort((a, b) => a - b).join('|');
+			// 5|10|20|30|40|100
+			
+		├─┬─────────────────────────────────────────────██──.apply()──Array─┐
+			(array) => Math.min.apply(null, array)
+			Math.min.apply(null, [13, 243, 3, -3, 56]) // -3
+
+╟─┬───────────────────────────────────────────────────────────────Array─┐
+	function lastKNumbers([l, n]) {
+		[l, n] = [l, n].map(Number);
+		let arr = [1];
+		for (let i = 1; i <= l - 1; i++) {
+			let start = Math.max(0, i - n);
+			let end = i - 1;
+			let temp = arr.slice(start, end + 1).reduce((a, b) => a + b);
+			arr.push(temp);
+			//console.log(typeof temp)
+		}
+		console.log(arr.join(' '));
+	}
+	lastKNumbers(['6', '3']); // 1 1 2 4 7 13
+	lastKNumbers(['8', '2']); // 1 1 2 3 5 8 13 21
+	
+╟─┬───────────────────────────────────────────────────────────────Array─┐
+	function sortArray(input) {
+		let result = input
+			//.map(e => e.toLowerCase())
+			.sort(function(a, b){
+				if (a.length > b.length) {
+					return 1;
+				} else if (a.length < b.length) {
+					return -1;
+				} else {
+					return a > b;
+				}
+			});
+		console.log(result.join('\n'));
+	}
+	function sortArray2(input) {
+		let result = input.sort(
+			(a, b) => (a.length - b.length) == 0 ? a > b : a.length - b.length
+		);
+		console.log(result.join('\n'));
+	}
+	sortArray2(['alpha', 'beta', 'gamma']);
+	// beta alpha gamma
+	sortArray2(['Isacc', 'Theodor', 'Jack', 'Harrison', 'George']);
+	// Jack Isacc George Theodor Harrison
+	sortArray2(['test', 'Deny', 'omen', 'Default']);
+	// Deny omen test Default
+	
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Matrix
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┬──────────────────────────────────────────────────────────────Matrix─┐
+	matrix = [
+	  ['0,0', '0,1', '0,2'],
+	  ['1,0', '1,1', '1,2'],
+	  ['2,0', '2,1', '2,2']
+	];
+	
+	├─┬────────────────────────────────────────────────────────────Matrix─┐
+		│Print
+		├───────────────────────────────────────────────────────────────────┘
+		console.log(
+			matrix
+				.map(row => row.join(' '))
+				.join('\n')
+		);
+
+╟─┬──────────────────────────────────────────────────────────────Matrix─┐
+	function diagonalSum(input) {
+		let arr = input.map(r => r.split(' ').map(Number));
+		let sum1 = 0, sum2 = 0;
+		for (let i = 0; i < arr.length; i++) {
+			sum1 += arr[i][i];
+			sum2 += arr[i][(arr.length - 1) - i];
+		}
+		console.log(sum1 + ' ' + sum2);
+	}
+	diagonalSum(['20 40', '10 60']); // 80 50
+	diagonalSum(['3 5 17', '-1 7 14', '1 -8 89']); // 99 25
+
+╟─┬──────────────────────────────────────────────────────────────Matrix─┐
+	function neighbors(input) {
+		let arr = input.map(r => r.split(' '));
+		//console.log(arr);
+		let count = 0;
+		for (let r = 0; r < arr.length - 1; r++) {
+			for (let c = 0; c < arr[r].length; c++) {
+				if (arr[r][c] == arr[r + 1][c])
+					count++;
+			}
+		}
+		for (let r = 0; r < arr.length; r++) {
+			for (let c = 0; c < arr[r].length - 1; c++) {
+				if (arr[r][c] == arr[r][c + 1])
+					count++;
+			}
+		}
+		console.log(count);
+	}
+	neighbors(['2 3 4 7 0', '4 0 5 3 4', '2 3 5 4 2', '9 8 7 5 4']); // 1
+	neighbors(['test yes yo ho', 'well done yo 6', 'not done yet 5']); // 2
+	
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*String
+╠═══════════════════════════════════════════════════════════════════════╝
+
+
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│charAt / charCodeAt / codePointAt
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Return the character or character code at the specified position in string.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│indexOf / lastIndexOf
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Return the position of specified substring in the string or last position of specified substring, respectively.
+		├─┬──────────────────────────────────────────────────────────String─┐
+			let str = 'I am JavaScript developer';
+								 0123456789012345678901234
+
+			str.indexOf('Java'); // 5
+			str.indexOf('java'); // -1
+			*Array
+		├─┬──────────────────────────────────────────────────────────String─┐
+			function countOccurrences([str, text]) {
+				let count = 0;
+				let index = -1;
+				while (true) {
+					index = text.indexOf(str, index + 1);
+					if (index < 0) return count;
+					count++;
+				}
+			}
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│startsWith / endsWith / includes
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns whether or not the string starts, ends or contains a specified string.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│concat
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Combines the text of two strings and returns a new string.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│fromCharCode / fromCodePoint
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Constructs a string from the specified sequence of Unicode values. This is a method of the String class, not a String instance.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│split
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Splits a String object into an array of strings by separating the string into substrings.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│slice
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Extracts a section of a string and returns a new string.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│substring / substr
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Return the specified subset of the string, either by specifying the start and end indexes or the start index and a length.
+		├─┬──────────────────────────────────────────────────────────String─┐
+			let str = 'I am JavaScript developer';
+								 0123456789012345678901234
+
+			str.substring(5, 9); // Java
+			
+		├─┬──────────────────────────────────────────────────────────String─┐
+			let str = 'I am JavaScript developer';
+								 0123456789012345678901234
+
+			str.substr(5); // JavaScript developer
+			str.substr(-4); // oper
+			├─ if a negative number is given, it is treated as length + (-start)
+			
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│match / replace / search
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Work with regular expressions.
+		├─┬──────────────────────────────────────────────────────────String─┐
+			│.replace()
+			├─────────────────────────────────────────────────────────────────┘
+			├─ returns a new string with all matches of a pattern replaced by a replacement. The pattern can be a string or a RegExp, and the replacement can be a string or a function to be called for each match.
+			├─┬────────────────────────────────────────────────────────String─┐
+				let str = "I like JS. JS is cool";
+				str.replace('JS', 'C#'); // 'I like C#. JS is cool'
+				str.replace(/JS/g, 'C#'); // 'I like C#. C# is cool'
+				
+			├─ You can specify a function for each match. In this case, the function will be invoked after the match. The function's result (return value) will be used as the replacement string.
+			├─┬────────────────────────────────────────────────────────String─┐
+				function replacer(match, p1, p2, p3, offset, string) {
+					return [p1, p2, p3].join(' - ');
+				}
+				let newString = 'abc12345#$*%'.replace(/([^\d]*)(\d*)([^\w]*)/, replacer);
+				// abc - 12345 - #$*%
+				
+		├─┬──────────────────────────────────────────────────────────String─┐
+			│Switching words in a string
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				let str = 'John Smith';
+				str.replace(/(\w+)\s(\w+)/, '$2, $1'); // Smith, John		
+				
+				RegExp.escape = function(str) {
+					return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+				};
+
+		┌────────────────────────────────────────────────────────────String─┐
+		│$$ ├─ Inserts a "$".
+		├───────────────────────────────────────────────────────────────────┤
+		│$& ├─ Inserts the matched substring.
+		├───────────────────────────────────────────────────────────────────┤
+		│$` ├─ Inserts the portion of the string that precedes the matched substring.
+		├───────────────────────────────────────────────────────────────────┤
+		│$' ├─ Inserts the portion of the string that follows the matched substring.
+		├───────────────────────────────────────────────────────────────────┤
+		│$n ├─ Inserts the n-th parenthesized submatch string (from RegExp).
+		├───────────────────────────────────────────────────────────────────┤
+
+		
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│toLowerCase / toUpperCase
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Return the string in all lowercase or all uppercase, respectively.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│normalize
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns the Unicode Normalization Form of the calling string value.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│repeat
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns a string consisting of the elements of the object repeated the given times.
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│trim
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method removes whitespace from both ends of a string. Whitespace in this context is all the whitespace characters (space, tab, no-break space, etc.) and all the line terminator characters (LF, CR, etc.).
+		
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│Reverse string
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐ 
+			let str = Array.from(string).reverse().join('');
+
+	├─┬────────────────────────────────────────────────────────────String─┐
+		│split
+		├───────────────────────────────────────────────────────────────────┘
+		├─ splits a String object into an array of strings by separating the string into substrings.  The separator is treated as a string or a regular expression. If separator is omitted, the array returned contains one element consisting of the entire string. If separator is an empty string, str is converted to an array of characters.
+		let syr = 'I like JS. JS is cool';
+		console.log(str.split('JS').length - 1); // колко пъти се среща 'JS' (дължината на масива - 1). неработи със застъпване
+		
+		let str = 'Hello World. How are you doing?';
+		console.log(str.split(' ', 3)); // ['Hello', 'World.', 'How']
+		
+		let str = 'Hello 1 word. Sentence number 2.';
+		console.log(str.split(/(\d)/));
+		// ['Hello ', '1', ' word. Sentence number ', '2', '.'] If separator contains capturing parentheses, matched results are returned in the array.
+
+>-----------------------------------------------------------------------<
+	string1.localeCompare(string2)
+>-----------------------------------------------------------------------<
+// method returns a number indicating whether a reference string comes before or after or is the same as the given string in sort order.
+
++=======================================================================+
+	string * Examples
++=======================================================================+
+
+		function printLetters(input) {
+			if (Array.isArray(input)) // is input array or string
+				input = input[0];
+			for (let i in input)
+				console.log(`str[${i}] -> ${input[i]}`);
+		}
+>-----------------------------------------------------------------------<
+
+		let str = 'I like    JS';
+		let tokens = str.split(' ');
+		console.log(tokens); // ['I', 'like', '', '', '', 'JS']
+		tokens = tokens.filter(s => s != '');
+		console.log(tokens); // ['I', 'like', 'JS']
+		console.log(tokens.join(' ')); // 'I like JS'
+>-----------------------------------------------------------------------<
+
+		function countOccurrences([str, text]) {
+			//[str, text] = [str.toLowerCase(), text.toLowerCase()];
+			let count = 0;
+			let index = -1;
+			while (true) {
+				index = text.indexOf(str, index + 1);
+				if (index < 0)
+					return count;
+				count++;
+			}
+		}
+>-----------------------------------------------------------------------<
+
+		function censorship2(input) {
+			RegExp.escape= function(s) {
+				return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+			};
+			let text = input[0];
+			let censor = input.slice(1).map(RegExp.escape).join('|');
+			let reg = new RegExp(censor, 'g');
+			text = text.replace(reg, w => '-'.repeat(w.length));
+			console.log(text);
+		}
+
+		censorship(['roses are red, violets are blue', ', violets are', 'red']);
+		// roses are ---------------- blue
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*RegExp -> /something/igm
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─
+	
+\d 	        matches a digit (equal to [0-9])
+\D 	        Any Non-digit character
+. 	        Any Character
+\. 	        Period
+[abc] 	    Only a, b, or c. това е множество ([0-9\.\-] всички числа заедно с '.' и '-')
+[^abc] 	    Not a, b, nor c ( обръща значението на [] )
+[a-z] 	    Characters a to z
+[0-9] 	    Numbers 0 to 9
+\w 	        matches any word character (equal to [a-zA-Z0-9_])
+\W 	        Any Non-alphanumeric character
+{m} 	    	m Repetitions
+{m,n} 	    m to n Repetitions
+* 	        Zero or more repetitions
++ 	        One or more repetitions
+? 	        Optional character (0 или 1)
+\s 	        Any Whitespace [\r\n\t\f\v ]
+\S 	        Any Non-whitespace character
+^…$         Starts and ends (използва се за валидация, дали дадения текст е символите м/у ^...$)
+^           matches start of text (олавяме първото съвпадение със ^regexp което е началото)
+$           matches end of text
+(…)         Capture Group
+(a(bc))     Capture Sub-group
+(.*)        Capture all
+abc|def	    Matches abc or def (no(abc|def) noabc или nodef)
+\b          граница по разделител
+
+i           ignore case
+g           global (всички)
+m           multiline
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│.match() // string.match(regexp)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ method return array containing the entire match (one match) result and any parentheses-captured matched results; null if there were no matches.
+	├─ If regexp include 'g' flag, the method returns an Array containing all matched substrings rather than match objects. Captured groups are not returned.
+	├─ If regexp does not include 'g' flag, the method returns the same result as RegExp.exec().
+	├─┬───────────────────────────────────────────────────────────────────┐
+		function occurrencesOfWord([str, word]) {
+			let pattern = '\\b' + word + '\\b';
+			let regexp = new RegExp(pattern, 'gi');
+			let result = str.match(regexp);
+			return result ? result.length : '0';
+		}
+		console.log(occurrencesOfWord([
+			'How do you plan on achieving that? How? How can you even think of that?',
+			'how'
+		])); // 3
+		
+>-----------------------------------------------------------------------<
+	.exec()
+>-----------------------------------------------------------------------<
+// returned array has
+[0] = The full string of characters matched,
+[1], ... [n] = The parenthesized substring matches, if any. The number of possible parenthesized substrings is unlimited.
+index: The 0-based index of the match in the string.
+input: The original string.
+
+// If the match fails, the exec() method returns null. If you are executing a match simply to find true or false, use the regexp.test() method or the string.search() method.
+
+// If regexp include 'g' flag, you can use the exec() method multiple times to find successive matches in the same string. When you do so, the search starts at the substring of str specified by the regular expression's lastIndex property (test() will also advance the lastIndex property). 
+
+		let pattern = /\b([0-9]{1,2})-([A-Z][a-z]{2})-([0-9]{4})\b/g;
+		let str = '1-Jun-2012 is before 14-Feb-2016';
+		console.log(pattern.exec(str));
+		// [0 = 1-Jun-2012, 1 = '1', 2 = 'Jun', 3 = '2012']
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│.test(string)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ имали поне едно съвпадение
+		let emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,20}$/i;
+		console.log(emailPattern.test("test@abv.bg")); // true
+		console.log(emailPattern.test("a.hills@gtx.de")); // true
+		console.log(emailPattern.test("invalid@@mail")); // false
+		console.log(emailPattern.test("err test@abv.bg")); // false
+
+
+/\+\d{1,3}([ -]*[0-9]){6,}/
+// Matches international phone, e.g. +359 2 123-456
+/^\+\d{1,3}([ -]*[0-9]){6,}$/
+// Validates international phone +359 2 123-456 is a valid phone +359 (888) 123-456 is a invalid phone
+
+no(?:abc|def) // ?: ще намери съвпадение но няма да върне група като резултат
+(?=\s|$) // ?= означава че ще се ползва като делител но няма да се включи в match-а
+(.*?) // всеки един символ поотделно
+(.*?)= // символите до = включително
+
++=======================================================================+
+	RegExp * Examples
++=======================================================================+
+	RegExp.escape = function(str) {
+		return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	};
+
+>-----------------------------------------------------------------------<
+	function htmlEscape(text) {
+		text = new String(text);
+		let map = { '"': '&quot;', '&': '&amp;', "'": '&#39;', '<': '&lt;', '>': '&gt;' };
+		return text.replace(/[\"&'<>]/g, ch => map[ch]);
+	}
+
+>-----------------------------------------------------------------------<
+	let str = '<img src="[imgSource]" />';
+	str = str.replace(/\[imgSource\]/, './smiley.gif');
+
+>-----------------------------------------------------------------------<
+	let str = 'Visit <link>http://fb.com</link> or <link>http://softuni.bg</link>.';
+	str = str.replace(/<link>(.*?)<\/link>/g, '<a href="$1">Link</a>');
+	// $1 = (.*?) // . match-ва всичко (почти) а *? е минималния брой
+	
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Object
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Objects can be initialized using new Object(), Object.create(), or using {}.
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	let sofiaObj = new Object();
+	sofiaObj = {
+		name: "Sofia",
+		lat: 42.696552,
+		long: 23.326011
+	};
+		
+╟─ An object is a collection of properties, and a property is an association between a name (or key) and a value. A property's value can be a function, in which case the property is known as a method. A property of an object can be explained as a variable that is attached to the object. You access the properties of an object with a dot-notation . and bracket [] notation.
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	sofiaObj.name // 'Sofia'
+	sofiaObj['lat'] // 42.696552
+	
+	sofiaObj['people'] = 1221292;
+	console.log(sofiaObj);
+	// {name:"Sofia", lat:42.696552, long:23.326011, people:1221292}
+		
+╟─ Unassigned properties of an object are undefined (and not null).
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	sofiaObj.people // undefined
+		
+╟─ An object property name can be any valid JavaScript string, including the empty string. However, any property name that has a space or a hyphen, or that starts with a number can only be accessed using the square bracket [] notation. In JavaScript objects are a reference type. Two distinct objects are never equal, even if they have the same properties. Only comparing the same object reference with itself yields true.
+
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│*Object.create()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ creates a new object with the specified prototype object and properties.
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		Object.create(nameObj, propertiesObject)
+		
+		├─ proto is object which should be the prototype of the newly-created object.
+		├─ propertiesObject specify property descriptors to be added to the newly-created object
+		
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Crossbrowser Object.create()
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			function nameFunc(obj) {
+				function pass() {};
+				pass.prototype = obj;
+				return pass;
+			}
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│*Object.getPrototypeOf() / .__proto__
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ All objects inherit methods and properties from Object.prototype, although they may be overhidden (except an Object with a null prototype, i.e. Object.create(null)). For example when an 'rabbitObj' inherits from 'animalObj', in JavaScript that means that there is a special property rabbitObj.__proto__ = animalObj.
+	
+	├─██ The object, referenced by '__proto__' is called a prototype.
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		let animalObj = { eats: true };
+		let rabbitObj = Object.create(animalObj);
+		
+		rabbitObj.__proto__ === animalObj;  // true
+		Object.getPrototypeOf(rabbitObj) === animalObj; // true
+		
+		rabbit.eats; // true
+		
+		├─ When a property could not be foun in rabbitObj, it follows the __proto__ link and searches in animalObj.
+		
+		├─ Changes to the prototype object (naimalObj is prototype of rabbitObj) are seen by all objects through prototype chaining. We could put a method into animalObj and it becomes available in rabbitObj
+		├─┬──────────────────────────────────────────────────────────Object─┐
+			animalObj.jump = function() {aletrt("I'm tired")};
+			rabbitObj.jump(); // I'm tired
+			
+	├─██ If you’ll be reading the specification, what we call __proto__ here is named [[Prototype]] there. And double square brackets are important, because there’s another property named prototype.
+	
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		let animalObj = { eats: true };
+		function RabbitFunc(name) { this.name = name };
+		
+		RabbitFunc.prototype = animalObj;
+		├─██ The code literally means set __proto__ = animalObj for all objects created by new RabbitFunc.
+		
+		let rob = new RabbitFunc('Roberto');
+		alert(rob.eats); // true
+	
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		│Object.defineProperty() getter
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Defines a new property directly on an object, or modifies an existing property on an object, and returns the object.
+		├─┬──────────────────────────────────────────────────────────Object─┐
+			Object.defineProperty(obj, nameProp, descriptor)
+			
+		├─┬──────────────────────────────────────────────────────────Object─┐
+			let animalObj = { food: 'banana' };
+			Object.defineProperty(
+				animalObj,
+				'eats',
+				{
+					get: function () { return 'eat ' + this.food; }
+				}
+			);
+
+			animalObj.eats
+			// Runs the getter, which yields 'eat ' + this.food
+		
+		├─ This method allows precise addition to or modification of a property on an object. 
+		.
+		.
+		to advanced
+		.
+		.
+		
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│.assign()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ method is used to copy the values of all enumerable own properties from one or more source objects to a target object. It will return the target object.
+		
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│.hasOwnProperty(key) проверяваме за стойност
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		nameObj.hasOwnProperty(key) // true/false
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		if (sofia.age === undefined)
+			console.log("Key 'age' does not exist");
+
+		if (sofia.name !== undefined)
+			console.log("Key 'name' exists");
+			
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│*Object.keys()
+	│*Object.getOwnPropertyNames()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ returns an array with all the enumerable properties names ('keys') of an object.
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		Object.keys(sofiaObj) // ['name', 'lat', 'long', 'people']
+		Object.keys(sofiaObj).length // 4
+		
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│Print (for...in)
+	├─┬───────────────────────────────────────────────────────────────────┘
+		for (let key in sofiaObj)
+			console.log(`${key} -> ${sofiaObj[key]}`);
+			
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		let emptyObj = {};
+		Object.keys(emptyObj) // []
+		
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│In ES2017 you can use
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		Object.values(nameObj)
+		
+╟─┬──────────────────────────────────────────────────────────██──Object─┐
+	│to array in ES2015
+	├─┬───────────────────────────────────────────────────────────────────┘
+		Object.keys(nameObj).map(key => [key, nameObj[key]])
+
+
+
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│this / toStrin
+	├─┬───────────────────────────────────────────────────────────────────┘
+		let rect = {
+			width: 10,
+			height: 4,
+			grow: function(w, h) { 
+				this.width += w; // или rect.width
+				this.height += h; // или rect.height
+			},
+			toString: function() { 
+			return `rectangle[${this.width} x ${this.height}]`;
+			}
+		};
+		console.log(rect);
+		// Object {width: 10, height: 4} 
+		console.log('' + rect);
+		// rectangle[10 x 4] This will invoke toString() to convert the object to String
+		├─┬──────────────────────────────────────────────────────────Object─┐
+			let rect2 = {
+				width: 1160,
+				height: 104,
+				toString: function() { 
+					return `rectangle2[${this.width} x ${this.height}]`;
+				}
+			};
+			
+			[rect, rect2].join(', ');
+			// rectangle[10 x 4], rectangle2[1160 x 104]
+
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	function orderRects(input) {
+		let rects = [];
+		for (let [width, height] of input) {
+			let rect = createRect(width, height);
+			rects.push(rect);
+		}
+		rects.sort((a, b) => a.compareTo(b));
+		return rects;
+
+		function createRect(width, height) {
+			let rect = {
+				width: width,
+				height: height,
+				area: function () {
+					return rect.width * rect.height;
+				},
+				compareTo: function (other) {
+					let result = other.area() - rect.area();
+					// ако result е 0 тогава вземи израза в ()
+					return result || (other.width - rect.width);
+				}
+			};
+			return rect;
+		}
+	}
+	console.log(orderRects([[10,5], [5,12]]));
+	console.log(orderRects([[10,5], [3,20], [5,12]]));
+
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│module patterns
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		│module pattern (with Object Literal)
+		├─┬─────────────────────────────────────────────────────────────────┘
+			let moduleObj = {
+				count: 0, // public
+				increase: function(num) { return this.count += num },
+				decrease: function(num) { return this.count -= num },
+				value: function() { return this.count }
+			};
+			moduleObj.count = 2; // the 'count' is accessible
+			console.log(moduleObj.value()); // 2
+			console.log(moduleObj.increase(5)); // 7
+			console.log(moduleObj.decrease(1)); // 6
+
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		│module pattern (with Closure)
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let module = (function() {
+				let count = 0; // private
+				return {
+					increase: (num) => count += num,
+					decrease: (num) => count -= num,
+					value: () => count
+				};
+			})();
+			console.log(module.count); // undefined (not accessible)
+			console.log(module.value()); // 0
+			console.log(module.increase(5)); // 5
+			console.log(module.decrease(2)); // 3
+
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		│revealing module pattern (with Closure)
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let revModule = (function() {
+				let count = 0; // private
+				function change(amount) { return count += amount; }
+				function increase(num) { return change(num); }
+				function decrease(num) { return change(-num); }
+				function value() { return count; }
+				return { increase, decrease, value };
+			})();
+			console.log(module.count); // undefined (not accessible)
+			console.log(revModule.value()); // 0
+			console.log(revModule.increase(5)); // 5
+			console.log(revModule.decrease(2)); // 3
+
+			
+
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	function listProcessing(input) {
+		let process = (function () {
+			let list = [];
+			return {
+				add: (str) => list.push(str),
+				remove: (str) => list = list.filter(el => el != str),
+				print: () => console.log(list)
+			}
+		}());
+		for (let el of input) {
+			let [func, str] = el.split(' ');
+			process[func](str);
+		}
+	}
+
+	listProcessing([
+		'add hello',
+		'add again',
+		'remove hello',
+		'add again',
+		'print'
+	]);
+	
+╟─┬──────────────────────────────────────────────────────────██──Object─┐
+	function cars(input) {
+		let cars = new Map;
+		for (let line of input) {
+			let args = line.split(' ');
+			let action = args.shift();
+			process[action](args);
+		}
+		let process = (function () {
+			return {
+				create: ([name, ,parent]) => {
+					// предполага ме че ако се подава parent
+					// то той съществува в cars
+					parent = parent ? cars.get(parent) : null;
+					let newObj = Object.create(parent);
+					cars.set(name, newObj);
+				},
+				set: ([name, key, val]) => {
+					let obj = cars.get(name);
+					obj[key] = val;
+				},
+				print: (name) => {
+					let obj = cars.get(name[0]), objects = [];
+					for (let key in obj)
+							objects.push(`${key}:${obj[key]}`);
+					console.log(objects.join(', '))
+				}
+			}
+		}());
+	}
+
+	cars([
+		'create c1',
+		'create c2 inherit c1',
+		'set c1 color red',
+		'set c2 model new',
+		'print c1',
+		'print c2'
+	]);
+	
+╟─┬──────────────────────────────────────────────────────────────Object─┐
+	│*JSON
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		let nameObj = {name : "SoftUni", age : 3};
+		console.log(JSON.stringify(nameObj));
+		// {"name":"SoftUni","age":3}
+		
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		let str = "{\"name\":\"Nakov\",\"age\":24}" // задължително ""
+		console.log(JSON.parse(str));
+		// Object {name: "Nakov", age: 24}
+
+	├─┬────────────────────────────────────────────────────────────Object─┐
+		let polygon = {
+			about: {name:"triangle", color:"red"},
+			corners: [{x:2, y:6}, {x:3, y:1}, {x:-2, y:2}]
+		};
+
+		console.log(JSON.stringify(polygon));
+		//  {
+					"about":{"name":"triangle","color":"red"},
+					"corners":[{"x":2,"y":6},{"x":3,"y":1},{"x":-2,"y":2}]
+				}
+
+		console.log(polygon.about.color); // red
+		polygon.about.location = {x:4, y:-7};
+		// about: {name:'triangle', color:'red', location:{ x: 4, y: -7 }}
+		
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│*Clone
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			JSON.parse(JSON.stringify(polygon))
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Map
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ The Map object is a simple key/value map. Any value (both objects and primitive values) may be used as either a key or a value. A Map object iterates its elements in insertion order — a for...of loop returns an array of [key, value] for each iteration. Map instances are only useful for collections
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	let phonebook = new Map();
+	
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	│Object vs Map (wath makes Map better)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ 1. An Object has a prototype, so there are default keys in the map. This could be bypassed by using map = Object.create(null) since ES5, but was seldomly done.
+	├─ 2. The keys of an Object are Strings and Symbols, where they can be any value for a Map.
+	├─ 3. You can get the size of a Map easily while you have to manually keep track of size for an Object.
+
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	│.set(key, val) / .get(key) / .delete(key) / nameMap.size / .clear()
+	│.has(key) / ?.values()? / .entries()
+	├─┬───────────────────────────────────────────────────────────────────┘
+		let phonebook = new Map();
+		
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.set(key, val) Add / Replace
+		├─┬─────────────────────────────────────────────────────────────────┘
+			├─ Add / Replace
+			└─┬───────────────────────────────────────────────────────────Map─┐
+				phonebook.set('John Smith', '+1-555-8976'); // Add
+				phonebook.set('Lisa Smith','+1-555-1234'); // Add
+				phonebook.set('Sam Doe', '+1-555-5030'); // Add
+				phonebook.set('Nakov', '+359-899-555-592'); // Add
+				phonebook.set('Nakov', '+359-2-981-9819'); // Replace
+	
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.delete(key)
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			phonebook.delete('John Smith');
+			
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.size
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			console.log(phonebook.size); // 3
+			
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.has(key)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns a boolean asserting whether a value has been associated to the key in the Map object or not.
+		
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.clear()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Removes all key/value pairs from the Map object.
+		
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.keys()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns a new Iterator object that contains the keys for each element in the Map object in insertion order.
+		
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.values()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns a new Iterator object that contains the values for each element in the Map object in insertion order.
+		
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.entries()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Returns a new Iterator object that contains the [key, value] pairs for each element in the Map object in insertion order.
+
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	│Print
+	├─┬───────────────────────────────────────────────────────────────────┘
+		for (let [key, value] of phonebook)
+		   console.log(`${key} -> ${value}`);
+
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	│сортиране
+	├─┬───────────────────────────────────────────────────────────────────┘
+		[...nameMap].sort(nameFunc) // или Array.from(nameMap)
+		function nameFunc(a, b) {
+			let result = a[1] - b[1];
+			if (result == 0)
+				result = a[1].localeCompare(b[1]);
+			return result;
+		}
+		├─ method returns a number indicating whether a reference string comes before or after or is the same as the given string in sort order.
+		└─┬─────────────────────────────────────────────────────────────Map─┐
+			str1.localeCompare(str2)
+			
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	function cityMarkets(input) {
+		let towns = new Map();
+		for (let line of input) {
+			[town, product, salesAndPrice] = line.split(/\s*->\s*/);
+			[sales, price] = salesAndPrice.split(/\s*:\s*/).map(Number);
+			let money = sales * price;
+			if (!towns.has(town))
+				towns.set(town, new Map());
+			let oldMoney = towns.get(town).get(product);
+			if (oldMoney)
+				money += oldMoney;
+			towns.get(town).set(product, money);
+		}
+		for (let town of towns.keys()) {
+			console.log('Town - ' + town);
+			for (let [product, money] of towns.get(town))
+				console.log(`$$$${product} : ${money}`);
+		}
+	}
+
+	cityMarkets([
+		'Sofia -> Laptops HP -> 200 : 2000',
+		'Sofia -> Raspberry -> 200000 : 1500',
+		'Sofia -> Audi Q7 -> 200 : 100000',
+		'Montana -> Portokals -> 200000 : 1',
+		'Montana -> Qgodas -> 20000 : 0.2',
+		'Montana -> Chereshas -> 1000 : 0.3'
+	]);
+	/**
+	 Town - Sofia
+	 $$$Laptops HP : 400000
+	 $$$Raspberry : 300000000
+	 $$$Audi Q7 : 20000000
+	 Town - Montana
+	 $$$Portokals : 200000
+	 $$$Qgodas : 4000
+	 $$$Chereshas : 300
+	 */
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Set
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Set objects are collections of values, you can iterate its elements in insertion order. A value in the Set may only occur once, it is unique in the Set's collection.
+
+╟─┬─────────────────────────────────────────────────────────────────Set─┐
+	│.clear() / nameSet.size / .add(val) / .delete(val) / .has(val)
+	│
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		let names = new Set();
+	
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.add(val)
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐ 
+			names.add("Peter");
+			names.add(20);
+			names.add("Maria");
+			names.add(5);
+			├─ Duplicates are skipped
+			├─┬───────────────────────────────────────────────────────────Map─┐
+				names.add("Maria"); // skipped
+				
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.has(val)
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			names.has('Peter'); // true
+			
+	├─┬───────────────────────────────────────────────────────────────Map─┐
+		│.delete(val)
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			names.delete(20); // Delete element if exists
+			
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	│Array
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		Array.from(nameSet.values())
+		[...nameSet.values()]
+
+╟─┬─────────────────────────────────────────────────────────────────Map─┐
+	function extractUniqueWords(input) {
+		let pattern = '\\b[a-zA-Z0-9_]+\\b';
+		let regexp = new RegExp(pattern, 'g');
+		let words = new Set();
+		for (let line of input) {
+			let matches = line.match(regexp);
+			matches.forEach(m => words.add(m.toLowerCase()));
+		}
+		console.log([...words.values()].join(', '));
+	}
+
+
+	
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Selectors (CSS / jQuery)
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ It selects elements in the DOM
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│#nameId
+	├─ The 'nameId' must be unique in the document
+	├─────────────────────────────────────────────────────────────────────┤
+	│.nameClass
+	├─ Selects all elements with the given class
+	├─────────────────────────────────────────────────────────────────────┤
+	│*(asterisk)
+	├─ Selects all elements
+	├─────────────────────────────────────────────────────────────────────┤
+ 
+╟─ You can also combine selectors, making a more specific selector. For example, the selector .key selects all elements that have the class name key. The selector p.key selects only <p> elements that have the class name key.
+╟─ In the usual way, if you make a selector more specific, then you increase its priority. If you use these techniques, you avoid the need to specify class or id attributes on so many tags in your document. Instead, CSS does the work.
+╟─ In large designs where speed is important, you can make your stylesheets more efficient by avoiding complex rules that depend on relationships between elements.
+╟─ To use any of the meta-characters ( such as  !"#$%&'()*+,./:;<=>?@[\]^`{|}~ ) as a literal part of a name, it must be escaped with two backslashes: \\. For example, an element with id='foo.bar', can use the selector $('#foo\\.bar')
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Attribute Selectors
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ You are not restricted to the two special attributes,  class and id. You can specify other attributes by using square brackets. Inside the brackets you put the attribute name, optionally followed by a matching operator and a value.
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│[disabled]
+		├─ Selects all elements with a 'disabled' attribute.
+		├───────────────────────────────────────────────────────────────────┤
+		│[name='value']
+		├─ Selects elements that have the specified attribute with a value exactly equal to a certain value.
+		├───────────────────────────────────────────────────────────────────┤
+		│[class~=key]
+		├─ Selects classes with the string 'key' (but not e.g. 'keyed', 'monkey', 'buckeye'). Functionally equivalent to .key.
+		├───────────────────────────────────────────────────────────────────┤
+		│[name|='string']
+		├─ Selects elements that have the specified attribute with a value either equal to a given string or starting with that string followed by a hyphen (-).
+		├───────────────────────────────────────────────────────────────────┤
+		│[name~='word']
+		├─ Selects elements that have the specified attribute with a value containing a given word, delimited by spaces.
+		├───────────────────────────────────────────────────────────────────┤
+		│[name^='string']
+		├─ Selects elements that have the specified attribute with a value beginning exactly with a given string.
+		├───────────────────────────────────────────────────────────────────┤
+		│a[href^='https://']
+		├─ Specifies what the attribute's value should start with; in this case, it selects secure links.
+		├───────────────────────────────────────────────────────────────────┤
+		│[name$='string']
+		├─ Selects elements that have the specified attribute with a value ending exactly with a given string. The comparison is case sensitive.
+		├───────────────────────────────────────────────────────────────────┤
+		│img[src$='.png']
+		├─ Selects elements who's value ends with the provided string. Indirectly selects PNG images; any images that are PNGs but whose URL doesn't end in '.png' (e.g. `src='some-image.png?_=cachebusterhash'`) won't be selected.
+		├───────────────────────────────────────────────────────────────────┤
+		│[name!='value']
+		├─ Select elements that either don’t have the specified attribute, or do have the specified attribute but not with a certain value.
+		├───────────────────────────────────────────────────────────────────┤
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Pseudo-classes selectors
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ A keyword added to selectors that specifies a special state of the element to be selected.
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│:link / :visited / :active / :hover / :focus / :first-child
+		│:last-child / :nth-child / :nth-last-child / :nth-of-type
+		│:first-of-type / :last-of-type / :empty / :target / :checked
+		│:enabled / :disabled
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│:contains()
+			├─ Select all elements that contain the specified text
+			├─────────────────────────────────────────────────────────────────┘
+			│:has()
+			├─ Selects elements which contain at least one element that matches the specified selector.
+			├─────────────────────────────────────────────────────────────────┘
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Selectors based on relationships
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Select elements based on the relationships between elements. You can use these to make selectors that are more specific.
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│A E
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Any E element that is a descendant of an A element (that is: a child, or a child of a child, etc.)
+		
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│A > E
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Any E element that is a child (i.e. direct descendant) of an A element
+		
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│E:first-child
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Any E element that is the first child of its parent
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│B + E
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Any E element that is the next sibling of a B element (that is: the next child of the same parent)
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║DOM = Document Object Model
+╠═══════════════════════════════════════════════════════════════════════╝
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	document.body.getElementByTagName('footer')[0].style.display = 'none';
+
+╟─├─┬───────────────────────────────────────────────────────────────────┐
+		│.appendCild() / .createElement() / .textContent
+		├─┬─────────────────────────────────────────────────────────────────┘
+			about:blank // празна страница
+			<html>
+				<head></head>
+				<body></body>
+			</html>
+			├─┬───────────────────────────────────────────────────────────────┤
+				let d = document.createElement('div');
+				d.textContent = 'mamkamu';
+				document.body.appendCild(d);
+				├─┬─────────────────────────────────────────────────────────────┤
+					<html>
+						<head></head>
+						<body>
+							<div>mamkamu</div>
+						</body>
+					</html>
+			├─┬───────────────────────────────────────────────────────────────┐
+				d.id = 'haha';
+				├─┬─────────────────────────────────────────────────────────────┐
+					<html>
+						<head></head>
+						<body>
+							<div id="haha">mamkamu</div>
+						</body>
+					</html>
+			├─┬───────────────────────────────────────────────────────────────┐
+				d.appendCild(document.createElement('hr'));
+				├─┬─────────────────────────────────────────────────────────────┐
+					<html>
+						<head></head>
+						<body>
+							<div id="haha">
+								mamkamu
+								<hr>
+							</div>
+						</body>
+					</html>
+
+			├─┬───────────────────────────────────────────────────────────────┐
+				document.querySelector('body'); // tag
+				├─┬─────────────────────────────────────────────────────────────┐
+					<body>
+						<div id="haha">
+							mamkamu
+							<hr>
+						</div>
+					</body>
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Select a single element -> returns HTMLElement
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│.querySelector()
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				document.querySelector('#haha'); // търсене по id
+				├─┬─────────────────────────────────────────────────────────────┐
+					<div id="haha">
+						mamkamu
+						<hr>
+					</div>
+	
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│.getElementById()
+			├─────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Select a collection of elements -> returns a collection
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│.querySelectorAll()
+			├─────────────────────────────────────────────────────────────────┘
+			├─ връща всичко масив от елементи [objects]
+			├─┬───────────────────────────────────────────────────────────────┐
+				let inputs = document.getElementsByTagName('li');
+				let towns = document.getElementsByName('towns[]');
+				
+			├─ '#nav li' търсим tag-ове li във id nav (# е за id)
+			├─┬───────────────────────────────────────────────────────────────┐
+				let header = document.querySelectorAll('#nav li');
+				
+				let allLinks = document.links;
+				
+	├─ това е грешно
+	├─┬───────────────────────────────────────────────────────────────┐
+		document.getElementsByTagName('table tr');
+		
+	├─ правилно
+	├─┬───────────────────────────────────────────────────────────────┐
+		document.querySelectorAll('table tr')
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│DOM API: Element Properties
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			<div id="first" class="big">First <b>DIV</b></div>
+			├─┬───────────────────────────────────────────────────────────────┐
+				let div = document.getElementById('first');
+
+				div.id // first
+				div.tagName // DIV
+				div.className // big
+				div.textContent // First DIV
+				div.innerHTML // First <b>DIV</b>
+				div.outerHTML
+				// <div id="first" class="big">First <b>DIV</b></div>
+			
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│кога .value / .textContent или .innerHTML
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				let list = document.createElement("ul");
+
+				let liPeter = document.createElement("li");
+				liPeter.textContent = "Peter";
+				list.appendChild(liPeter);
+
+				let liMaria = document.createElement("li");
+				liMaria.innerHTML = "<b>Maria</b>";
+				list.appendChild(liMaria);
+
+				document.body.appendChild(list);
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│delete или махане на връзката
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			<ul id="items">
+				<li class="red">Red</li>
+				<li class="blue">Blue</li>
+			</ul>
+			├─┬───────────────────────────────────────────────────────────────┐
+				let redElements = document.querySelectorAll("#items li.red");
+				redElements.forEach(li => {
+					li.parentNode.removeChild(li);
+				});
+				
+				├─ '#items li.red' от id = items вземи всички tag-ове <li> със class = red със точка се означава име на class
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│onload
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			 <tag onload="myScript">
+			 
+			window.onload = function() {};
+			 
+				
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Browser Object Model (BOM)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│window / navigator / screen / location / history / document
+		├───────────────────────────────────────────────────────────────────┘
+		
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Mouse events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│click / mouseover / mouseout / mousedown / mouseup
+			├─────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Keyboard events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│keydown / keypress (emit char) / keyup
+			├─────────────────────────────────────────────────────────────────┘
+	
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Touch events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│touchstart / touchend / touchmove / touchcancel
+			├─────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Focus events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│focus (got focus) / blur (lost focus)
+			├─────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│DOM / UI events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│load (finished loading) / unload (exit from page)
+			│resize (window resized) / dragstart / drop
+			├─────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Form events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│input (value changed) / change (change + leave)
+			│submit (form sent) / reset (form reset)
+			├─────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Handling EventsHandling Events
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│.onmouseover / .onmouseout / .addEventListener()
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				<div id='text'>Some text</div>
+				├─┬─────────────────────────────────────────────────────────────┐
+					let div = document.getElementById('text');
+					
+					div.onmouseover = function(event) {
+						event.target.style.border = "3px solid green";
+					}
+					
+					div.onmouseout = function() {
+						this.style.border = ""; // this === event.target
+					}
+
+					div.addEventListener('mouseout', function() {
+						this.style.border = "";
+					})
+					
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│onclick=""
+			├─────────────────────────────────────────────────────────────────┘
+			├─ Shows "[object HtmlButtonElement]" when clicked
+			├─┬───────────────────────────────────────────────────────────────┐
+				<button onclick="alert(this)">Click Me</button>
+
+			├─ call function f(btn) {}
+			├─┬───────────────────────────────────────────────────────────────┐
+				<button onclick="f(this)">Click Me</button>
+				<script>
+					function f(btn) { alert(btn); };
+				</script>
+
+			├─ Shows '[object Window]' when clicked
+			├─┬───────────────────────────────────────────────────────────────┐
+				<button onclick="f()">Click Me</button>
+				<script>
+					function f() { alert(this); };
+				</script>
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	let textbox = document.createElement('input');
+	textbox.type = 'text';
+	textbox.value = "I am a text box";
+	document.body.appendChild(textbox);
+
+	textbox.addEventListener('focus', focusHandler);
+	function focusHandler(event) {
+	  textbox.value = "Event handler removed";
+	  textbox.removeEventListener('focus', focusHandler);
+	}
+	
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│.addEventListener('', function(event){event.offsetX ... })
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		<html>
+		<head>
+				<title>Mouse in Gradient</title>
+				<link rel="stylesheet" href="gradient.css" />
+				<script src="gradient.js"></script>
+		</head>
+		<body onload="attachGradientEvents()">
+		<div id="gradient-box">
+				<div id="gradient">Click me!</div>
+		</div>
+		<div id="result"></div>
+		<script>
+			function attachGradientEvents() {
+				let gradient = document.getElementById('gradient');
+				gradient.addEventListener('mousemove', gradientMove);
+				gradient.addEventListener('mouseout', gradientOut);
+				function gradientMove(event) {
+					let power = event.offsetX / (event.target.clientWidth - 1);
+					power = Math.trunc(power * 100);
+					document.getElementById('result').textContent = power + '%';
+				}
+				function gradientOut() {
+					document.getElementById('result').textContent = '';
+				}
+			}
+		</script>
+		</body>
+		</html>
+		
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│setInterval(function(), milliseconds) / clearInterval()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		<html>
+		<head>
+				<meta charset="UTF-8">
+				<title>Title</title>
+		</head>
+		<body>
+		<div id="time"
+				style="border: 3px solid blue;
+				text-align: center;
+				font-size: 2em;
+				margin-bottom: 10px">00:00</div>
+		<button id="startBtn">Start</button>
+		<button id="stopBtn" disabled="true">Stop</button>
+		<script>
+				window.onload = function () {
+						let time, interval;
+						let startBtn = document.getElementById('startBtn');
+						let stopBtn = document.getElementById('stopBtn');
+				
+						startBtn.addEventListener('click', function () {
+								time = -1;
+								incrementTime();
+								interval = setInterval(incrementTime, 1000);
+								startBtn.disabled = true;
+								stopBtn.disabled = false;
+						});
+				
+						function incrementTime() {
+								time++;
+								document.getElementById('time').textContent = ('0' + Math.trunc(time/60)).slice(-2) +
+								':' + ('0' + (time % 60)).slice(-2);
+						}
+				
+						stopBtn.addEventListener('click', function () {
+								clearInterval(interval);
+								startBtn.disabled = false;
+								stopBtn.disabled = true;
+						});
+				}
+		</script>
+		</body>
+		</html>
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*jQuery -> $()
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Load jQuery from its official CDN
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	
+╟─ Local
+╟─┬─────────────────────────────────────────────────────────────────────┐	
+	<script src="jquery-3.1.1.min.js"></script>
+
+╟─ $ това е document.get... или .query... Можем да запишем jQuery вместо $. В селектора можем да сложим string ('body') или елемент (document.body). jQuery връща Obj.
+╟─ When creating new elements (or selecting existing ones), jQuery returns the elements in a collection. It has a zero-indexed sequence of DOM elements, some familiar array functions (.length property).
+
+╟─├─┬───────────────────────────────────────────────────────────────────┐
+		│Change the CSS for all <li> tags
+		├─┬─────────────────────────────────────────────────────────────────┘
+			$('li').css('background', '#DDD');
+
+╟─├─┬───────────────────────────────────────────────────────────────────┐
+		├ $('div')
+		├─ document.getElementsByTagName('div');
+		├───────────────────────────────────────────────────────────────────┤
+		├ $('.menu-item')
+		├─ document.getElementsByClassName('.menu-item');
+		├───────────────────────────────────────────────────────────────────┤
+		├ $('#navigation')
+		├─ document.getElementById('navigation');
+		├───────────────────────────────────────────────────────────────────┤
+		│$('ul.menu li')
+		├─ document.querySelectorAll('ul.menu li');
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:even')
+		├─ Even <li>
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:first')
+		├─ First <li>
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:odd')
+		├─ Odd <li>
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:last')
+		├─ Last <li>
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:first-child')
+		├─ Selects the first child of <li>
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:has(p)')
+		├─ Selects all <li> holding <p> inside
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:contains("Sofia")')
+		├─ Selects <li> holding given text
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:eq(2)')
+		├─ Selects the third <li> element
+		├───────────────────────────────────────────────────────────────────┤
+		│$('li:not(:checked)')
+		├─ Elements not matching the selector
+		├───────────────────────────────────────────────────────────────────┤
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│onload
+	├─┬───────────────────────────────────────────────────────────────────┘
+		$(document).ready(function())
+
+		
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│.preventDefault()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ the default action of the event will not be triggered.
+	├─┬───────────────────────────────────────────────────────────────────┐
+		<body>
+		<a href="http://jquery.com">default click action is prevented</a>
+		<div id="log"></div>
+		<script>
+			$( "a" ).click(function( event ) {
+				event.preventDefault();
+				$( "<div>" )
+					.append( "default " + event.type + " prevented" )
+					.appendTo( "#log" );
+			});
+		</script>
+		</body>
+		
+		// default click prevented
+		
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	<html lang="en">
+	<head> ... </head>
+	<body>
+	<p>
+			This is a
+			<a href="https://softuni.bg">link</a>.
+	</p>
+	<ul>
+			<li>one</li>
+			<li>two</li>
+			<li>three</li>
+	</ul>
+	<script>
+			$(document).ready(function () {
+					$('body *').click(function (event) {
+							$(this).fadeOut();
+							$(document.body).append(
+									'removed: ' + this + '<br>\n'
+							);
+							event.preventDefault();
+							event.stopPropagation();
+					})
+			})
+	</script>
+	</body>
+	</html>
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│$(element).text()
+	├─ е същото като element.textContent
+	├─────────────────────────────────────────────────────────────────────┤
+	│each((index, element) => {})
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		<html lang="en">
+		<head> ... </head>
+		<body>
+		<ul id="towns">
+				<li>Sofia</li>
+				<li>Pleven</li>
+				<li>Varna</li>
+				<li>Plovdiv</li>
+		</ul>
+		<input type="text" id="searchText" />
+		<button onclick="search()">Search</button>
+		<div id="result"></div>
+		</body>
+		<script>
+			function search() {
+				let text = $('#searchText').val();
+				let count = 0;
+				$('#towns li').each((index, element) => {
+						if (element.textContent.includes(text)) {
+								$(element).css('font-weight', 'bold');
+								count++;
+						} else {
+								$(element).css('font-weight', '');
+						}
+				});
+			
+				/*
+				$('#towns li').each(function() {
+						if ($(this).text().indexOf(text) != -1) {
+								$(this).css('font-weight', 'bold');
+								count++;
+						} else {
+								$(this).css('font-weight', '');
+						}
+				});
+				 */
+			 
+				$('#result').text(count + ' matches found.');
+				$('#searchText').val('');
+		}
+		</script>
+		</html>
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Adding Elements with jQuery
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│append()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Insert content to the end of each element in the set of matched elements.
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│prepend()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Insert content to the beginning of each element in the set of matched elements.
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│appendTo()
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Insert every element in the set of matched elements to the beginning of the target.
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│after()
+		├───────────────────────────────────────────────────────────────────┘
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		<div id="wrapper">
+			<div>Hello, student!</div>
+			<div>Goodbye, student!</div>
+		</div>
+		├─┬─────────────────────────────────────────────────────────────────┐
+			$('#wrapper div').append('<p>It's party time :)</p>');
+			$('<h1>Greetings</h1>').prependTo('body');
+			├─┬───────────────────────────────────────────────────────────────┐
+				<h1>Greetings</h1>
+				<div id="wrapper">
+					<div>
+						Hello, student!
+						<p>It's party time :)</p>
+					</div>
+					<div>
+						Goodbye, student!
+						<p>It's party time :)</p>
+					</div>
+				</div>
+	
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Creating / Removing Elements
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		let div = $('<div>');
+		div.text('I am a new div.');
+		div.css('background', 'blue');
+		div.css('color', 'white');
+		$(document.body).append(div);
+		let paragraph = $('<p>Some text</p>');
+		paragraph.appendTo(div);
+		$('div').remove();
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│jQuery Events
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│.on('action', function()) / .off('action', function())
+		├───────────────────────────────────────────────────────────────────┘
+	  ├─┐
+			$('a.button').on('click', buttonClicked);
+				function buttonClicked() {
+					$('.selected').removeClass('selected');
+					$(this).addClass('selected'); 
+					// "this" is the event source (the hyperlink clicked)
+				}
+				
+			$('a.button').off('click', buttonClicked);
+	
+	├─ и двата реда са еднакви
+	├─┬───────────────────────────────────────────────────────────────────┐
+		$('ul').on('click', 'li', onListItemClick);
+		$('ul li').on('click', onListItemClick);
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│.attr('attribute', 'value') / .removeAttr('attribute')
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		<html lang="en">
+		<head>
+			...
+			<style>
+				li {
+					display: inline-block;
+					cursor: pointer;
+					padding: 10px;
+				}
+				ul { padding:0; }
+			</style>
+			...
+		</head>
+		<body>
+		<h2>Towns</h2>
+		<ul id="items">
+			<li>Sofia</li>
+			<li>Varna</li>
+			<li>Plovdiv</li>
+			<li>Bourgas</li>
+			<li>Rousse</li>
+		</ul>
+		<button id="showTownsButton">Show Towns</button>
+		<div id="selectedTowns"></div>
+		<script>$(attachEvents())</script>
+		<script>
+		function attachEvents() {
+			$('#showTownsButton').on('click', show);
+			$('#items li').on('click', function() {
+				if ($(this).attr('data-selected')) {
+					$(this).removeAttr('data-selected');
+					$(this).css('background', '');
+				} else {
+					$(this).attr('data-selected', 'true');
+					$(this).css('background', '#DDD');
+				}
+			});
+
+			function show() {
+				// alert($('#items li[data-selected=true]').toArray());
+				$('#selectedTowns').text(
+					$('#items li[data-selected=true]')
+						.toArray()
+						.map(li => li.textContent)
+						.join(', ')
+				);
+			}
+		}
+		</script>
+		</body>
+		</html>
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Creating jQuery Plugins
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		(function($) {
+			$.fn.highlight = function(className) {    
+				$(this).on('mouseover', function() {
+					$(this).addClass(className);
+				});
+				$(this).on('mouseout', function() {
+					$(this).removeClass(className);
+				});
+			}
+		}(jQuery));
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│.prop() vs .attr()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ The .prop() method gets the property value for only the first element in the matched set. To get the value for each element individually, use a looping construct such as jQuery's .each() or .map() method.
+	├─ Note: Attempting to change the type property (or attribute) of an input element created via HTML or already in an HTML document will result in an error being thrown by Internet Explorer 6, 7, or 8.
+	┌─────────────────────────────────────────────────────────────────────┐
+	│ Attributes vs. Properties
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Before jQuery 1.6, the .attr() method sometimes took property values into account when retrieving some attributes, which could cause inconsistent behavior. As of jQuery 1.6, the .prop() method provides a way to explicitly retrieve property values, while .attr() retrieves attributes. For example: selectedIndex, tagName, nodeName, nodeType, ownerDocument, defaultChecked, defaultSelected should be retrieved and set with the .prop() method. Prior to jQuery 1.6, these properties were retrievable with the .attr() method, but this was not within the scope of attr. These do not have corresponding attributes and are only properties.
+
+	├─ it is a JavaScript variable named elem
+	├─┬───────────────────────────────────────────────────────────────────┐
+		<input type="checkbox" checked="checked" />
+		
+		├─ Will change with checkbox state
+		├─┬─────────────────────────────────────────────────────────────────┐
+			elem.checked // true
+			$(elem).prop("checked") // true (Boolean)
+			$(elem).attr("checked") // (1.6.1+) "checked" (String)
+			$(elem).attr("checked") // (pre-1.6) true (Boolean)
+	
+		├─ Does not change. Initial state of the checkbox
+		├─┬─────────────────────────────────────────────────────────────────┐
+			elem.getAttribute("checked") // "checked" (String)
+			$(elem).attr("checked") // (1.6) "checked" (String)
+
+	┌─────────────────────────────────────────────────────────────────────┐
+	├─ The checked attribute is a boolean attribute, which means the corresponding property is true if the attribute is present at all—even if, for example, the attribute has no value or is set to empty string value or even "false". This is true of all boolean attributes.
+	├─ Nevertheless, the most important concept to remember about the checked attribute is that it does not correspond to the checked property. The attribute actually corresponds to the defaultChecked property and should be used only to set the initial value of the checkbox. The checked attribute value does not change with the state of the checkbox, while the checked property does. Therefore, the cross-browser-compatible way to determine if a checkbox is checked is to use the property:
+	├─┬───────────────────────────────────────────────────────────────────┐
+    if (elem.checked)
+    if ($(elem).prop("checked"))
+    if ($(elem).is(":checked"))
+
+The same is true for other dynamic attributes, such as selected and value.
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Document.createDocumentFragment()
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ DocumentFragments are DOM Nodes. They are newer part of the main DOM tree. The usual use case is to create the document fragment, append elements to the document fragment and then append the document fragment to the DOM tree. In the DOM tree, the document fragment is replaced by all its children.
+	├─ Since the document fragment is in memory and not part of the main DOM tree, appending children to it does not cause page reflow (computation of element's position and geometry). Consequently, using document fragments often results in better performance.
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│??? Variadic curried sum function
+	├─────────────────────────────────────────────────────────────────────┘
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Unit testing
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│AAA Pattern: Arrange, Act, Assert
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		function sortNums(arr) {
+			arr.sort((a, b) => a - b);
+		}
+	
+	├─ 1. Arrange all necessary preconditions and inputs
+	├─┬───────────────────────────────────────────────────────────────────┐
+		let nums = [ -9, 0.55, 4, 6, 33 ];
+		
+	├─ 2. Act on the object or method under test
+	├─┬───────────────────────────────────────────────────────────────────┐
+		sortNums(nums);
+		
+	├─ 3. Assert that the obtained results are what we expect
+	├─┬───────────────────────────────────────────────────────────────────┐
+		if (JSON.stringify(arr) != '[-9,0.55,4,6,33]')
+			console.error('hahahaha');
+			
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Unit Testing Framework Mocha and Chai
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Install (Node.js)
+		├───────────────────────────────────────────────────────────────────┘
+		├─ 1. Install Mocha globally, we can do it from cmd or from the Webstorm terminal (they're equivalent)
+		├─┬─────────────────────────────────────────────────────────────────┐
+			npm install -g mocha // mocha --version
+			
+		├─ 2. Install Chai globally
+		├─┬─────────────────────────────────────────────────────────────────┐
+			npm install -g chai
+		
+		├─ 3.	Install jsdom globally
+		├─┬─────────────────────────────────────────────────────────────────┐
+			npm install -g jsdom
+			
+		├─ 4. Install jsdom-global globally
+		├─┬─────────────────────────────────────────────────────────────────┐
+			npm install -g jsdom-global
+
+		├─ 5. Install jquery globally
+		├─┬─────────────────────────────────────────────────────────────────┐
+			npm install -g jquery
+			
+		├─┬─────────────────────────────────────────────────────██──────────┐
+			│NODE_PATH
+			├─────────────────────────────────────────────────────────────────┘
+			├─ By default Node.js does not find its globally-installed modules. You need to set the NODE_PATH environment variable
+			├─┬───────────────────────────────────────────────────────────────┐
+				├─ rem for any future sessions
+				├─┬─────────────────────────────────────────────────────────────┐
+					setx NODE_PATH %AppData%\npm\node_modules
+					
+				├─ rem for current session	
+				├─┬─────────────────────────────────────────────────────────────┐
+					set NODE_PATH=%AppData%\npm\node_modules
+					
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Test Groups and Test Cases
+		├───────────────────────────────────────────────────────────────────┘
+		├─ 1.
+		├─┬─────────────────────────────────────────────────────────────────┐
+			let expect = require('chai').expect;
+			let jsdom = require('jsdom-global')();
+			let $ = require('jquery');
+			
+		├─ 2.
+		├─┬─────────────────────────────────────────────────────────────────┐
+			document.body.innerHTML = `... some html ...`;
+			
+		├─ 3.
+		├─┬─────────────────────────────────────────────────────────────────┐
+			js code
+			
+		├─ 4.
+		├─┬─────────────────────────────────────────────────────────────────┐
+			describe("Test group #1", function() {
+			
+				it("should return … when …", function() {
+					expect(actual).to.be.equal(expected);
+				});
+				it("should return … when …", function() { … });
+				
+			});
+			
+			describe("Test group #2", function() {
+			
+				it("should return … when …", function() {
+					expect(actual).to.be.equal(expected);
+				});
+				…
+			});
+		├─┬─────────────────────────────────────────────────────────────────┐
+			describe('Test group #1', function() {
+				it('passing ... should return ...', function() {
+					expect(actual).to.equal(expected);
+				});
+			});	
+				
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│Catch throw
+		├───────────────────────────────────────────────────────────────────┘
+		├─ To test whether something is thrown, you have to pass a function to expect, which expect will call itself.
+		├─┬─────────────────────────────────────────────────────────────────┐
+			expect(model.get.bind(model, 'name'))
+				.to.throw('Property does not exist in model.');
+			├─ The bind method creates a new function which when called will call model.get with this set to the value of model and the first argument set to 'name'.
+		
+		├─┬─────────────────────────────────────────────────────────────────┐
+			expect(function(){model.get('name');})
+				.to.throw('Property does not exist in model.');
+				
+		├─┬─────────────────────────────────────────────────────────────────┐
+			expect(() => model.get('name'))
+				.to.throw('Property does not exist in model.');
+		
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Class and Object
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Classes are in fact "special functions", and just as you can define function expressions and function declarations, the class syntax has two components: class expressions and class declarations. 
+
+╟─ In programming classes provide the structure (template) for the objects of the same type. Objects holds a set of named values (data) e.g. a rectangle object holds width, height. Objects holds actions (behavior), e.g. calcArea(), resize(ratio)
+
+╟─ One class may have many instances (objects)
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	Example class: Rectangle
+	Example objects: redRect, blueRect
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│declarations
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		class Rectangle {
+			constructor(width, height) {
+				this.width = width;
+				this.height = height;
+			}
+		}
+		
+	├─ An important difference between function declarations and class declarations is that function declarations are hoisted and class declarations are not. You first need to declare your class and then access it, otherwise code like the following will throw a ReferenceError.
+	
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│expressions
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ unnamed
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		let Rectangle = class {
+			constructor(width, height) {
+				this.width = width;
+				this.height = height;
+			}
+		}
+	
+	├─ named
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		let Rectangle = class Rectangle {
+			constructor(width, height) {
+				this.width = width;
+				this.height = height;
+			}
+		}
+	
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│body and method
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ The body of a class is the part that is in curly brackets {}. This is where you define class members, such as methods or constructors.
+	
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│constructor
+		├───────────────────────────────────────────────────────────────────┘
+		├─ The constructor is a special method ( function ) for creating and initializing an object created with a class. There can only be one special method with the name "constructor" in a class.
+		
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			│constructor destruction
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				class Rectangle {
+					constructor(width, height, color) {
+						[this.width, this.height, this.color] =
+							[width, height, color];
+					}
+				}
+				
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			│new.target
+			├─────────────────────────────────────────────────────────────────┘
+			├─ In class constructors, new.target refers to the constructor that was directly invoked by new. This is also the case if the constructor is in a parent class and was delegated from a child constructor.
+			├─┬────────────────────────────────────────────────────────Class──┐
+				class A {
+					constructor() {
+						console.log(new.target.name);
+					}
+				}
+				class B extends A { constructor() { super(); } }			
+			
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│method
+		├───────────────────────────────────────────────────────────────────┘
+		├─ A shorter syntax for method is a function assigned to the method's name.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			let obj = { foo: function(){}, bar: function(){} };
+			let obj = { foo(){}, bar(){} };
+			
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			let obj = {
+				a : 'foo',
+				b(){ return this.a; }
+			};
+			obj.b(); // 'foo'
+			
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			let bar = {
+				foo0 : function (){return 0;},
+				foo1(){return 1;},
+				['foo' + 2](){return 2;},
+			};
+			bar.foo0(); // 0
+			bar.foo1(); // 1
+			bar.foo2(); // 2
+			
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			│static methods
+			├─────────────────────────────────────────────────────────────────┘
+			├─ Static methods are called without instantiating their class. Static methods are often used to create utility functions for an application.
+			├─┬────────────────────────────────────────────────────────Class──┐
+				class Point {
+						constructor(x, y) {
+								[this.x, this.y] = [x, y];
+						}
+						static distance(a, b) {
+								const dx = a.x - b.x;
+								const dy = a.y - b.y;
+								return Math.sqrt(dx*dx + dy*dy);
+						}
+				}
+				const p1 = new Point(5, 5);
+				const p2 = new Point(10, 10);
+
+				Point.distance(p1, p2);
+			
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│getter
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Sometimes it is desirable to allow access to a property that returns a dynamically computed value, or you may want to reflect the status of an internal variable without requiring the use of explicit method calls. In JavaScript, this can be accomplished with the use of a getter. The 'get' syntax binds an object property to a function that will be called when that property is looked up.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			{get nameProp() { ... } }
+			{get [expression]() { ... } }
+			
+		┌────────────────────────────────────────────────────────────Class──┐
+		├─██ It is not possible to simultaneously have a getter bound to a property and have that property actually hold a value, although it is possible to use a getter and a setter in conjunction to create a type of pseudo-property.
+			get
+			set
+		├─██ Getters give you a way to define a property of an object, but they do not calculate the property's value until it is accessed.
+		
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			│lazy getters / smart / self-overwriting
+			├─────────────────────────────────────────────────────────────────┘
+			├─ If the value isn't needed just now. It will be used later, or in some case it's not used at all.
+			├─ If it's used, it will be accessed several times, and there is no need to re-calculate that value will never be changed, or shouldn't be re-calculated.
+			├─██ You shouldn't use a lazy getter for a property whose value you expect to change, because the getter will not recalculate the value.
+			
+			├─┬────────────────────────────────────────────────────────Class──┐
+				get notifier() {
+					delete this.notifier;
+					return this.notifier = document.getElementById("bookmarked-notification-anchor");
+				}
+				
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│setter
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Binds an object property to a function to be called when there is an attempt to set that property.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			{set prop(val) { . . . }}
+			{set [expression](val) { . . . }}
+			
+		├─██ Setters are most often used in conjunction with getters to create a type of pseudo-property. It is not possible to simultaneously have a setter on a property that holds an actual value.
+		├─ It must have exactly one parameter.
+			
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			let obj = {
+				set current(str) {
+					this.log[this.log.length] = str;
+				},
+				log: []
+			}
+			
+	├─┬────────────────────────────────────────────────────get&set─Class──┐
+		class Circle {
+				constructor(radius) {
+						this.radius = radius;
+		}
+				get diameter() {return 2 * this.radius;}
+				set diameter(d) {this.radius = d / 2;}
+				get area() {
+						return Math.PI * this.radius * this.radius;
+				}
+		}
+			
+	
+	
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│Create a new object
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let redRect = new Rectangle(4, 5, 'red');
+			let blueRect = new Rectangle(8, 3, 'blue');
+			
+			let someRect = new Rectangle(8);
+			// Rectangle {width: 8, height: undefined, color: undefined}
+			
+			someRect.name = 'Pesho';
+			//	Rectangle {
+						width: 8, 
+						height: undefined, 
+						color: undefined,
+						name: 'Pesho'
+					}
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			│defpult args
+			├─────────────────────────────────────────────────────────────────┘
+			├─┐
+				class Rectangle {
+					constructor(width = 0, height = 0, color = null) {
+						this.width = width;
+						this.height = height;
+						this.color = color;
+					}
+				}
+			├─┬────────────────────────────────────────────────────────Class──┐
+				let oddRect = new Rectangle(undefined, 50, undefined);
+				// Rectangle {width: 0, height: 50, color: null}
+
+				
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			let stupidRect = new (class {
+				constructor(w, h) {}
+			})(5, 6)
+			
+			let stupidRect = new class {
+				constructor(w, h) {}
+			}(5, 6)
+
+
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│instanceof
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let t = new Teacher("Pesho","pp@hit.bg","PHP");
+			console.log(t instanceof Person) // true
+
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│class name
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let p = new Person("Pesho","pesho@hit.bg");
+			console.log(p.constructor.name);
+			// Person
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│Inherit / super
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		class Person {
+			constructor(name, email) {
+				[this.name, this.email] = [name, email];
+			}
+			toString() {
+				let className = this.constructor.name;
+				return `${className} (name: ${this.name}, email: ${this.email})`;
+			}
+		}
+
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		class Teacher extends Person {
+			constructor(name, email, subject) {
+				super(name, email);
+				this.subject = subject;
+			}
+			toString() {
+				let baseStr = super.toString().slice(0, -1);
+				return baseStr + `, subject: ${this.subject})`;
+			}
+		}
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	function result() {
+			let Suits = {
+					CLUBS: "\u2663", // ♣
+					DIAMONDS: "\u2666", // ♦
+					HEARTS: "\u2665", // ♥
+					SPADES: "\u2660" // ♠
+			};
+			let Faces = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+			class Card {
+					constructor(face, suit) {
+							[this.face, this.suit] = [face, suit];
+					}
+					get face() {return this._face;}
+					set face(f) {
+							if (!Faces.includes(f))
+									throw new Error('mamka mu');
+							this._face = f;
+					}
+					get suit() {return this._suit;}
+					set suit(s) {
+							if (!Object.keys(Suits).map(k => Suits[k]).includes(s))
+									throw new Error('mamka mu');
+							this._suit = s;
+					}
+					toString() {
+							return `${this.face}${this.suit}`
+					}
+			}
+			return {Suits, Card};
+	}
+	
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	(function() {
+			let id = 0;
+			class Extensible {
+					constructor() {this.id = id++;}
+					extend(temp) {
+							for (let key in temp) {
+									if (typeof temp[key] == 'function')
+											Extensible.prototype[key] = temp[key];
+									else
+											Extensible[key] = temp[key];
+							}
+					}
+			}
+			return Extensible;
+	})();
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│
+	├─────────────────────────────────────────────────────────────────────┘
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│mixin
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Multi-tiered inheritance hierarchies are occasionally useful for describing the natural order of objects but if the primary motivation is function re-use they can quickly become gnarly labyrinths of meaningless subtypes, frustrating redundancies and unmanageable logic.
+	
+	├─ JavaScript objects can invoke any public function regardless of lineage. The most straightforward approach is delegation – any public function can be invoked directly via 'call' or 'apply'.
+	
+	├─██ Mixins are a great compromise, allowing entire functional units to be borrowed and accessed with minimal syntax and they play very well with prototypes. They offer the descriptive prowess of hierarchical inheritance without the brain-cracking issues associated with multi-tiered, single-rooted ancestry.
+	
+	├─██ Mixin is a class that defines a set of functions relating to a type (e.g. Person, Circle, Observer). Mixins classes are usually considered abstract in that they will not themselves be instantiated – instead their functions are copied (or ‘borrowed’) by concrete classes as a means of ‘inheriting’ behaviour.
+	
+	├─ Mixin can be a regular object, a prototype, a function – whatever.
+	
+	┌────────────────────────────────────────────────────────────Class──┐
+	├─ All the coding examples are directed towards one use case: creating circular, oval or rectangular buttons.
+	├─┬──────────────────────────────────────────────────────────Class──┐
+		var Circle = function() {};
+		
+		Circle.prototype = {
+			area: function() {
+				return Math.PI * this.radius * this.radius;
+			},
+			grow: function() { this.radius++; },
+			shrink: function() { this.radius--; }
+		};
+		├─ In practice, however, such a heavyweight mixin is unnecessary. A simple object literal will suffice
+		├─┬────────────────────────────────────────────────────────Class──┐
+			var circleFns = {
+			area: function() {
+				return Math.PI * this.radius * this.radius;
+			},
+			grow: function() { this.radius++; },
+			shrink: function() { this.radius--; }
+		};
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│1. Extend Function
+		├───────────────────────────────────────────────────────────────────┘
+		├─ Simply copies (not clones) the mixin’s functions into the receiving object. A quick survey reveals some minor variations in this implementation. For example Prototype.js omits a 'hasOwnProperty' check (suggesting the mixin will have no enumerable properties in its prototype chain) while other versions assume you want to only copy the mixin’s prototype object. Here’s a version that is both safe and flexible.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			function extend(destination, source) {
+				for (var k in source) {
+				
+					// избягваме inherited properties
+					if (source.hasOwnProperty(k)) {
+						destination[k] = source[k];
+					}
+				}
+				return destination; 
+			}
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			var RoundButton = function(radius, label) {
+				this.radius = radius;
+				this.label = label;
+			};
+			 
+			extend(RoundButton.prototype, circleFns);
+		
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│2. Functional Mixins
+		├───────────────────────────────────────────────────────────────────┘
+		├─ If the functions defined by mixins are intended solely for the use of other objects, why bother creating mixins as regular objects at all? Put another way, a mixin should be a process not an object. The logical conclusion is to make our mixins into functions into which consumer objects inject themselves by delegation, thus cutting out the middle guy (the extend function) entirely.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			var asCircle = function() {
+				this.area = function() {
+					return Math.PI * this.radius * this.radius;
+				};
+				this.grow = function() {this.radius++;};
+				this.shrink = function() {this.radius--;};
+				return this;
+			};
+			
+			asCircle.call(Circle.prototype);
+			var circle1 = new Circle(5);
+			circle1.area(); //78.54
+			
+		├─ Mixins as verbs instead of nouns; lightweight one stop function shops. There are other things to like here too – the programming style is natural and concise: this always refers to the receiver of the function set. We don’t have to protect against inadvertent copying of inherited properties and (for what its worth) functions are now cloned instead of copied.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			var asButton = function() {
+				this.hover = function(bool) {
+					bool ? mylib.appendClass('hover') : 
+					mylib.removeClass('hover');
+				};
+				this.press = function(bool) {
+					bool ? mylib.appendClass('pressed') : 
+					mylib.removeClass('pressed');
+				};
+				this.fire = function() {
+					return this.action();
+				};
+				return this;
+			};
+			
+			var RoundButton = function(radius, label, action) {
+					this.radius = radius;
+					this.label = label;
+					this.action = action;
+			};
+			 
+			asButton.call(RoundButton.prototype);
+			asCircle.call(RoundButton.prototype);
+			 
+			var button1 = new RoundButton(
+				4, 'yes!', function() {return 'you said yes!'}
+			);
+			button1.fire(); //'you said yes!'
+			
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│3. Adding Options
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐ 
+			var asOval = function(options) {
+				this.area = function() {
+					return Math.PI * this.longRadius * this.shortRadius;
+				};
+				this.ratio = function() {
+					return this.longRadius/this.shortRadius;
+				};
+				this.grow = function() {
+					this.shortRadius += (options.growBy/this.ratio());
+					this.longRadius += options.growBy;
+				};
+				this.shrink = function() {
+					this.shortRadius -= (options.shrinkBy/this.ratio());
+					this.longRadius -= options.shrinkBy;
+				};
+				return this;
+			}
+			 
+			var OvalButton = function(longRadius, shortRadius, label, action) {
+				this.longRadius = longRadius;
+				this.shortRadius = shortRadius;
+				this.label = label;
+				this.action = action;
+			};
+			 
+			asButton.call(OvalButton.prototype);
+			asOval.call(OvalButton.prototype, {growBy: 2, shrinkBy: 2});
+			 
+			var button2 = new OvalButton(3, 2, 'send', function() {return 'message sent'});
+			button2.area(); //18.84955592153876
+			button2.grow();
+			button2.area(); //52.35987755982988 
+			button2.fire(); //'message sent'
+			
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│4. Adding Caching
+		├───────────────────────────────────────────────────────────────────┘
+		├─ With the help of the jsperf.com I ran metrics on every mixin strategy over 4 browsers. Surprisingly Chrome 12 performs significantly better using the functional approach, for the other browsers the functional mixin runs about half as fast as the classic mixin. Given that these mixins are likely to be invoked just once per type definition (as opposed to once per instance creation) the time difference should not cause too much worry, especially since we’re still talking 26,000 mixins per second even in IE8!
+		├─ By forming a closure around the mixins we can cache the results of the initial definition run and the performance implications are outstanding. Functional mixins now easily outperform classic mixins in every browser (in my tests by a factor of 20 in Chrome and a factor of 13 in Firefox 4). Again it doesn’t matter much either way but it leaves a nice feeling.
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			var asRectangle = (function() {
+				function area() {
+					return this.length * this.width;
+				}
+				function grow() {
+					this.length++, this.width++;
+				}
+				function shrink() {
+					this.length--, this.width--;
+				}
+				return function() {
+					this.area = area;
+					this.grow = grow;
+					this.shrink = shrink;
+					return this;
+				};
+			})();
+			 
+			var RectangularButton = function(length, width, label, action) {
+				this.length = length;
+				this.width = width;
+				this.label = label;
+				this.action = action;
+			}
+			 
+			asButton.call(RectangularButton.prototype);
+			asRectangle.call(RectangularButton.prototype);
+			 
+			var button3 = 
+				new RectangularButton(4, 2, 'delete', function() {return 'deleted'});
+			button3.area(); //8
+			button3.grow();
+			button3.area(); //15
+			button3.fire(); //'deleted'
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│Odl school Classes
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Constructor function defines class data
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		function Rectangle(width, height) {
+			this.width = width;
+			this.height = height;
+		}
+
+	├─ Behavior (methods) is later attached to the prototype
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		Rectangle.prototype.area = function () {
+			return this.width * this.height;
+		}
+		
+	├─ Instantiation works the same way
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		let rect = new Rectangle(3, 5);
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║Modules
+╠═══════════════════════════════════════════════════════════════════════╝
+
+
+	module.exports = Person;
+
+	let Person = require('./person');
+
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│Asynchronous Module Definition (AMD) and RequireJS
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		define(['./nameFile', ... ], function(player) {
+			function nameFunc() { ... }
+			return {nameFunc: nameFunc};
+		});
+
+	├─ Note: It's best if your project has a package.json file
+	
+	├─ Download RequireJS using terminal
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		npm install --save requirejs
+		
+	├─ Use a script tag with data-main set to your app's path
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		<script data-main="./js/app.js"
+						src="../../node_modules/requirejs/require.js">
+		</script>
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│CommonJS and SystemJS
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│Export
+		├─┬─────────────────────────────────────────────────────────────────┘
+			function nameFunc() { ... }
+			exports.nameFunc = nameFunc;
+			// module.exports === exports
+			
+			module.exports = { nameClass }
+
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│External
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			let nameFunc = require('filePath ... nameFile.js');
+
+		├─ Download SystemJS using terminal
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			npm install --save systemjs
+
+		├─ Note: It's best if your project has a package.json file
+		
+		├─ Node.js supports CommonJS format natively – you don't need to download anything if you're writing a node module
+
+		├─ Load the library in your host HTML
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			<script src="node_modules/systemjs/dist/system.js">
+			</script>
+
+		├─ Configure and load your app's path
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			<script>
+				System.config({ meta: { format: 'cjs' } });
+				System.import('filePath ... nameFile.js');
+			</script>
+
+╟─┬──────────────────────────────────────────────────────────────Class──┐
+	│ES6 Native Modules
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ No external libraries required
+	
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│Export
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			export function nameFunc(arg) { ... }
+			export let animal = 'Tiger';
+			
+		├─ You can export multiple members
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			export { something1, something2 as some2 };
+			// 'as' именува something2 на some2
+			
+		├─ Default exports can be imported without a name
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			export default function nameFunc(arg) { ... }
+
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│Import
+		├───────────────────────────────────────────────────────────────────┘
+		├─┐
+			import * as nameObj from './nameFile.js'; // * всичко
+			nameObj.nameFunc(); // call from module
+			
+		├─ Import specific members
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			import { something1, something2 } from './nameFile.js';
+			something1(); // call directly by name
+
+		├─ Import default member by specifying alias
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			import nameSome from './nameFile.js'; // задава ме име на default export от file.
+			nameSome(); // call directly by name
+
+			
+	├─┬────────────────────────────────────────────────────────────Class──┐
+		│Transpiler
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬──────────────────────────────────────────────────────────Class──┐
+			│Installing Babel
+			├─────────────────────────────────────────────────────────────────┘
+			
+			├─ Download Babel-CLI globally using terminaв
+			├─┬────────────────────────────────────────────────────────Class──┐
+				npm install --save-dev babel-cli -g
+
+			├─ Configure WebStorm with the correct path to babel.cmd and babel requires plug-ins to work
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*HTTP (Hyper Text Transfer Protocol)
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Text-based client-server protocol for the Internet
+
+╟─┬────────────────────────────────────────────────────────────────HTTP─┐
+	│GET
+	├─────────────────────────────────────────────────────────────────────┘
+	
+	├─ request line
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		GET /users/testnakov/repos HTTP/1.1
+		
+	├─ headers
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		Host: api.github.com
+		Accept: */*
+		Accept-Language: en
+		Accept-Encoding: gzip, deflate
+		User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36
+		Connection: Keep-Alive
+		Cache-Control: no-cache
+		
+	├─ body
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		<CRLF>
+
+╟─┬────────────────────────────────────────────────────────────────HTTP─┐
+	│POST
+	├─────────────────────────────────────────────────────────────────────┘
+
+	├─ request line
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		POST /repos/testnakov/test-nakov-repo/issues HTTP/1.1
+
+	├─ headers
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		Host: api.github.com
+		Accept: */*
+		Accept-Language: en
+		Accept-Encoding: gzip, deflate
+		User-Agent: Mozilla/4.0 (compatible;MSIE 6.0; Windows NT 5.0)
+		Connection: Keep-Alive
+		Cache-Control: no-cache
+
+	├─ body
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		<CRLF>
+		{"title":"Found a bug",
+		 "body":"I'm having a problem with this.",
+		 "labels":["bug","minor"]}
+		<CRLF>
+
+╟─┬────────────────────────────────────────────────────────────────HTTP─┐
+	│Response
+	├─────────────────────────────────────────────────────────────────────┘
+	
+	├─ status line
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		HTTP/1.1 200 OK
+
+	├─ header
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		Date: Fri, 11 Nov 2016 16:09:18 GMT+2
+		Server: Apache/2.2.14 (Linux)
+		Accept-Ranges: bytes
+		Content-Length: 84
+		Content-Type: text/html
+	
+	├─ body
+	├─┬──────────────────────────────────────────────────────────────HTTP─┐
+		<CRLF>
+		<html>
+			<head><title>Test</title></head>
+			<body>Test HTML page.</body>
+		</html>
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║AJAX == Asynchronous JavaScript And XML
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Technique for background loading of dynamic content / data.
+╟─ Web pages / apps load data from the Web server and render it.
+
+╟─ 1. HTTP request (initial page load)
+╟─ 2. HTTP response (HTML page)
+╟─ 3. AJAX request
+╟─ 4. AJAX response (asynchronous) -> Returns data as JSON / HTML
+╟─ 5. Modify the page DOM
+
+
+╟─┬────────────────────────────────────────────────────────────────AJAX─┐
+	│Partial page rendering
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Load HTML fragment + show it in a <div>
+
+╟─┬────────────────────────────────────────────────────────────────AJAX─┐
+	│JSON service
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Load JSON object and display it with JavaScript / jQuery
+
+╟─┬────────────────────────────────────────────────────────────────AJAX─┐
+	│XMLHttpRequest – Standard API for AJAX
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		<button onclick="loadRepos()">Load Repos</button>
+		<div id="res"></div>
+		
+	├─┬──────────────────────────────────────────────────────────────AJAX─┐
+		function loadRepos() {
+			let req = new XMLHttpRequest();
+			req.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200)
+					document.getElementById("res").textContent =
+						this.responseText;
+			};
+			req.open("GET",
+				"https://api.github.com/users/testnakov/repos", true);
+			req.send();
+		}
+
+╟─┬────────────────────────────────────────────────────────────────AJAX─┐
+	│jQuery AJAX
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│jQuery.ajax( url [, settings ] )
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│url
+			├─────────────────────────────────────────────────────────────────┘
+			├─ A string containing the URL to which the request is sent.
+			
+		├─┬────────────────────────────────────────────────────────────AJAX─┐
+			│settings
+			├─────────────────────────────────────────────────────────────────┘
+			├─ A set of key/value pairs that configure the Ajax request. All settings are optional.
+			├─┬──────────────────────────────────────────────────────────AJAX─┐
+				│async / beforeSend / cache / complete / contents / contentType 
+				│context / converters / crossDomain / data / dataFilter
+				│dataType / error / global / headers / ifModified / isLocal
+				│jsonp / jsonpCallback / method / mimeType / password
+				│processData / scriptCharset / statusCode / success / timeout
+				│traditional / type / url / username / xhr / xhrFields
+				│
+				├───────────────────────────────────────────────────────────────┘
+				
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│jQuery.get( url [, data ] [, success ] [, dataType ] )
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│data
+			├─────────────────────────────────────────────────────────────────┘
+			├─ Type: PlainObject or String. A plain object or string that is sent to the server with the request.
+			
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│success
+			├─────────────────────────────────────────────────────────────────┘
+			├─ Type: Function( PlainObject data, String textStatus, jqXHR jqXHR ). A callback function that is executed if the request succeeds. Required if dataType is provided, but you can use null or jQuery.noop as a placeholder.
+
+		├─┬─────────────────────────────────────────────────────────────────┐
+			│dataType
+			├─────────────────────────────────────────────────────────────────┘
+			├─ Type: String. The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+	
+	├─ load html
+	├─┬──────────────────────────────────────────────────────────────AJAX─┐
+		<div id="text">
+			<h1>AJAX jQuery.load()</h1>
+			<button onclick="loadTitle()">Load Title</button>
+		</div>
+
+	├─ load js
+	├─┬──────────────────────────────────────────────────────────────AJAX─┐
+		function loadTitle() {
+			$('#text').load("text.html");
+		}
+
+	├─ file text.html
+	├─┬──────────────────────────────────────────────────────────────AJAX─┐
+		<h1>Voilla!</h1>
+		<p>I am a text loaded with AJAX request</p>
+
+	├─┬──────────────────────────────────────────────────────────────AJAX─┐
+		│Handling Errors
+		├───────────────────────────────────────────────────────────────────┘
+	
+		├─ load js
+		├─┬────────────────────────────────────────────────────────────AJAX─┐
+			$(document).ajaxError(function(event, req, settings) {
+					$('#text').text(
+									`Error loading data: ` +
+									`${req.status} (${req.statusText})`
+					);
+			});
+			function loadTitle() {
+					$('#text').load("http://dir.bg");
+			}
+
+		
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║Promises in JS (asynchronous)
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─ Promises may be in one of these states
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	├─ Pending – operation still running (unfinished)
+	├─ Fulfilled – operation finished (and the result is available)
+	├─ Failed – operation is failed (and an error is available)
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	let promise = new Promise(function(resolve, reject) {
+		// Do an async task and then resolve or reject
+		
+		if () resolve('Success!');  // operation successful -> then()
+		else reject('Failure!');    // operation failed -> catch()
+	});
+
+	promise
+		.then(function(result) { })
+		// process the result when the promise is resolved
+
+		.catch(function(error) { })
+		// handle the error when the promise is rejected
+		
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	let p1 = new Promise(function(resolve, reject) {
+		console.log('task1 started.');
+		setTimeout(function() {
+			resolve('task1 result');
+			console.log('task1 finished.');
+		}, 1000);
+	});
+
+	let p2 = new Promise(function(resolve, reject) {
+		console.log('task2 started.');
+		setTimeout(function() {
+			resolve('task2 result');
+			console.log('task2 finished.');
+		}, 1500);
+	});
+
+	let p3 = new Promise(function(resolve, reject) {
+		console.log('task3 started.');
+		setTimeout(function() {
+			resolve('task3 result');
+			console.log('task3 finished.');
+		}, 500);
+	});
+
+	console.log('All tasks started.');
+	
+	Promise.all([p1, p2, p3])
+		.then(function(result) {
+			// тука result е масив от [result1, result2, result3]
+			console.log('All tasks finished.');
+			console.log('Result: ' + result.join(', '));
+			
+			// Error in then() block will reject the promise -> catch()
+
+		})
+		.catch(function(error) {
+			console.log("Some of the tasks failed.");
+			console.log("Error: " + error);
+		});
+
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│jQuery.ajax request
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+    function viewPost() {
+        let requestPost = $.ajax({url: ..., method: 'GET', headers: ...});
+        let requestComments = $.ajax({url: ..., method: 'GET', ...});
+				
+        Promise.all([requestPost, requestComments])
+            .then(displayPostAndComments)
+            .catch(displayError);
+    }
+		function displayPostAndComments([post, comments]) {}
+
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*Worker (asynchronous)
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┐
+	<p>Count numbers: <output id="result"></output></p>
+	<button onclick="startWorker()">Start Worker</button>
+	<button onclick="stopWorker()">Stop Worker</button>
+	<button onclick="resetWorker()">Reset Worker</button>
+	<script>
+		let worker = undefined;
+		
+		// Run background Web worker
+		function startWorker() {
+			worker = new Worker('counter-web-worker.js');
+			worker.onmessage = function(event) {
+				$('#result').text(event.data);
+			};
+		}
+		function stopWorker() {
+			if (worker) {
+				worker.terminate();
+				worker = undefined;
+			}
+		}
+		function resetWorker() {
+			if (worker) worker.postMessage('reset');
+		}
+	</script>
+
+	├─ counter-web-worker.js
+	├─┬───────────────────────────────────────────────────────────────────┐
+		let count = 0;
+		setInterval(function() {
+			postMessage(++count);
+		}, 500);
+
+		onmessage = function(e) {
+			if (e.data == 'reset')
+					count = 0;
+		};
+
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║*React
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Running React in the Browser
+	│// САМО ЗА ПРОБА. НИКОГА НЕ ГО ПРИЛАГАЙ ЗАЩОТО Е БАВНО
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		<script src="https://unpkg.com/react/dist/react.js"></script>
+		<script src="https://unpkg.com/react-dom/dist/react-dom.js"></script>
+		<script src="https://unpkg.com/babel-standalone"></script>
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Setup React Server-Side Build
+	├─────────────────────────────────────────────────────────────────────┘
+	├─ Install the React app creator
+	├─┬───────────────────────────────────────────────────────────────────┐
+		npm -g install create-react-app
+
+	├─ Run
+	├─┬───────────────────────────────────────────────────────────────────┐
+		create-react-app react-example
+
+	├─ Starts your React app from the command line
+	├─┬───────────────────────────────────────────────────────────────────┐
+		npm start
+
+	├─┬───────────────────────────────────────────────────────────────────┐
+		<div id="app">
+			A React component will be rendered here
+		</div>
+		<script type="text/babel">
+			ReactDOM.render(<div>Hello, React!</div>,
+				document.getElementById('app'));
+		</script>
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Creating a JSX Component (with Class)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		class Person extends React.Component {
+			render() {
+				return (
+					<div>
+						<h1>{this.props.person}</h1>
+						<p>Tel. {this.props.phone}</p>
+					</div>
+				)
+			}
+		}
+		
+		ReactDOM.render(
+			<Person person="Nakov"
+				phone="+359 2 981 981" />,
+			document.getElementById('app')
+		); 
+
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│Creating a JSX Component (with Object)
+	├─────────────────────────────────────────────────────────────────────┘
+	├─┐
+		let Person = React.createClass({
+			render: function() {
+				return (
+					<div>
+						<h1>{this.props.person}</h1>
+						<p>Tel. {this.props.phone}</p>
+					</div>
+				)
+			}
+		});
+
+		ReactDOM.render(
+			<Person person="Nakov"
+				phone="+359 2 981 981" />,
+			document.getElementById('app')
+		); 
+
+		
+		library -> module.export = {name};
+		let name = require('./path').name
+		
+		
+		
+		
+─ │ ═ ║
+
+┌ ┐ └ ┘ ┬ ┴ ├ ┤ ┼
+
+╔ ╗ ╚ ╝ ╦ ╩ ╠ ╣ ╬
+
+╒ ╕ ╘ ╛ ╤ ╧ ╞ ╡ ╪
+
+╓ ╖ ╙ ╜ ╥ ╨ ╟ ╢ ╫
+
+▀ ▄ █ ▌ ▐ ░ ▒ ▓ ■ □ ▪ ▫ ▬ ▲ ► ▼ ◄ ◊ ○ ☺ ☻
+██
+
+╔═══════════════════════════════════════════════════════════════════════╗
+║
+╠═══════════════════════════════════════════════════════════════════════╝
+╟─
+╟─┐
+╟─┬─────────────────────────────────────────────────────────────────────┐
+╟─┬─────────────────────────────────────────────────────────────────────┐
+	│
+	├─────────────────────────────────────────────────────────────────────┘
+	├─
+	├─┐
+	├─┬───────────────────────────────────────────────────────────────────┐
+	├─┬───────────────────────────────────────────────────────────────────┐
+		│
+		├───────────────────────────────────────────────────────────────────┘
+		├─┬─────────────────────────────────────────────────────────────────┐
+			├─┬───────────────────────────────────────────────────────────────┐
+				│
+				├───────────────────────────────────────────────────────────────┘
+				

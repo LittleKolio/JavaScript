@@ -1,0 +1,308 @@
+	function bunny(input) {
+		let damage = 0, kills = 0;
+		let bombs = input.pop().split(' ');
+		input = input.map(x => x.split(' ').map(Number));
+
+		for (let bomb of bombs) {
+			let [i, j] = bomb.split(',').map(Number);
+			let bombDam = input[i][j];
+			if (bombDam == 0)
+				continue;
+
+			let startI = Math.max(0, i - 1),
+			startJ = Math.max(0, j - 1);
+			
+			let endI = Math.min(i + 1, input.length - 1),
+			endJ = Math.min(j + 1, input[0].length - 1);
+
+			for (let k = startI; k <= endI; k++) {
+				for (let l = startJ; l <= endJ; l++) {
+					input[k][l] -= bombDam;
+					if (input[k][l] < 0)
+						input[k][l] = 0;
+				}
+			}
+			damage += bombDam;
+			kills++;
+		}
+		input.forEach(r => {
+			r.filter(x => x > 0).forEach(y => {
+				damage += y;
+				kills++;
+			})
+		});
+		console.log(damage + '\n' + kills);
+	}
+
+	bunny([
+		'5 10 15 20 59',
+		'10 10 10 10 66',
+		'10 15 10 10 20',
+		'10 10 10 10 11',
+		'2,2 0,1 3,4'
+	]);
+>-----------------------------------------------------------------------<
+
+	function validation(input) {
+		let hash = input.pop().split('');
+
+		let methodPatt = /^Method: (GET|POST|PUT|DELETE)$/;
+		let authorizationPatt = /^Credentials: (Bearer|Basic) ([a-zA-Z0-9]+)$/;
+		let contentPatt = /^Content: ([a-zA-Z0-9.]+)$/;
+
+		function validToken(hash, token) {
+			for (let i = 0; i < hash.length; i += 2) {
+				let match = token.match(new RegExp(hash[i + 1], 'g'));
+				return ((match || []).length == hash[i]);
+			}
+		}
+
+		for (let i = 0; i < input.length; i += 3) {
+			let method = input[i].match(methodPatt);
+			let authorization = input[i + 1].match(authorizationPatt);
+			let content = contentPatt.test(input[i + 2]);
+
+			let result = 'Response-Method:';
+
+			if (method && authorization && content) {
+				if (method[1] != 'GET' && authorization[1] != 'Bearer')
+					result += `${method[1]}&Code:401`;
+				else if (!validToken(hash, authorization[2]))
+					result += `${method[1]}&Code:403`;
+				else
+					result += `${method[1]}&Code:200&Header:${authorization[2]}`;
+			} else {
+				result = `Response-Code:400`;
+			}
+			console.log(result);
+		}
+	}
+
+	validation([
+		'Method: PUT',
+		'Credentials: Bearer as9133jsdbhjslkfqwkqiuwjoxXJIdahefJAB',
+		'Content: users.asd/1782452$278///**asd123',
+		'Method: POST',
+		'Credentials: Bearer 028591u3jtndkgwndskfjwelfqkjwporjqebhas',
+		'Content: Johnathan',
+		'Method: DELETE',
+		'Credentials: Bearer 05366u3jtndkgwndssfsfgeryerrrrrryjihvx',
+		'Content: This.is.a.sample.content',
+		'2e5g'
+	]);
+>-----------------------------------------------------------------------<
+
+	function parser(input) {
+		let data = new Map(), tempData = new Map(), mamkamu = {};
+
+		for (let line of input) {
+
+			let modulePatt = /^\$app\=\'(.+)\'$/g;
+			let controllerPatt = /^\$(controller)\=\'(.+)\'\&app\=\'(.+)\'$/g;
+			let modelPatt = /^\$(model)\=\'(.+)\'\&app\=\'(.+)\'$/g;
+			let viewPatt = /^\$(view)\=\'(.+)\'\&app\=\'(.+)\'$/g;
+
+			let module = modulePatt.exec(line);
+			let controller = controllerPatt.exec(line);
+			let model = modelPatt.exec(line);
+			let view = viewPatt.exec(line);
+
+			switch (true) {
+				case (module != null): {
+					create(data, module[1]);
+					fromTempDataToData(module[1]);
+				} break;
+				case (controller != null):
+					dataOrTempData(controller[1], controller[2], controller[3]); break;
+				case (model != null):
+					dataOrTempData(model[1], model[2], model[3]); break;
+				case (view != null):
+					dataOrTempData(view[1], view[2], view[3]); break;
+			}
+		}
+
+		function dataOrTempData(el, elName, modName) {
+			if (data.has(modName)) {
+				data.get(modName).get(el + 's').push(elName);
+			} else {
+				if (!tempData.has(modName))
+					create(tempData, modName);
+				tempData.get(modName).get(el + 's').push(elName);
+			}
+		}
+		
+		function create(obj, val) {
+			obj.set(val, new Map());
+			obj.get(val).set('controllers', []);
+			obj.get(val).set('models', []);
+			obj.get(val).set('views', []);
+		}
+
+		function fromTempDataToData(modName) {
+			if (tempData.has(modName))
+				data.set(modName, tempData.get(modName));
+		}
+
+		let result = Array.from(data).sort(sortData);
+
+		function sortData(mod1, mod2) {
+			let c1 = mod1[1].get('controllers').length;
+			let c2 = mod2[1].get('controllers').length;
+			let firstSort = c2 - c1;
+
+			if (firstSort == 0) {
+				let m1 = mod1[1].get('models').length;
+				let m2 = mod2[1].get('models').length;
+				return m1 - m2;
+			}
+			return firstSort;
+		}
+
+		result.forEach(v => {
+			let controllers = v[1].get('controllers').sort();
+			let models = v[1].get('models').sort();
+			let views = v[1].get('views').sort();
+
+			mamkamu[v[0]] = {
+				controllers: controllers,
+				models: models,
+				views: views
+			};
+		});
+		
+		console.log(JSON.stringify(mamkamu))
+	}
+
+	parser([
+		"$controller='PHPController'&app='Language Parser'",
+		"$controller='JavaController'&app='Language Parser'",
+		"$controller='C#Controller'&app='Language Parser'",
+		"$controller='C++Controller'&app='Language Parser'",
+		"$app='Garbage Collector'",
+		"$controller='GarbageController'&app='Garbage Collector'",
+		"$controller='SpamController'&app='Garbage Collector'",
+		"$app='Language Parser'"
+	]);
+	
+>-----------------------------------------------------------------------<
+
+	function queryStringsMess(input) {
+		for (let line of input) {
+			let temp = line.split(/&|\?=url=|\?/g).filter(l => l != '');
+			let tempMap = new Map();
+			for (let e of temp) {
+				if (/^url=/.test(e)) {
+					if (!tempMap.has('url'))
+						tempMap.set('url', []);
+					tempMap.get('url').push(e.slice(4))
+				} else if (/=/.test(e)) {
+					let [key, val] = e.split('=').map(x => x.replace(/(\+|%20)+/g, ' ').trim());
+					if (!tempMap.has(key))
+						tempMap.set(key, []);
+					tempMap.get(key).push(val);
+				}
+			}
+			let result = '';
+			for (let [k, v] of tempMap) {
+				result += k + '=[' + v.join(', ') + ']';
+			}
+			console.log(result);
+		}
+	}
+
+	function queryStringsMess2(input) {
+		let pattern = /([^=&?]+)=([^=&?]+)/g;
+		let pattern2 = /(\+|%20)+/g;
+		for (let line of input) {
+			let lineObj = {}, match, key, val, output = '';
+			match = pattern.exec(line);
+			while (match) {
+				key = match[1].replace(pattern2, ' ').trim();
+				val = match[2].replace(pattern2, ' ').trim();
+				if (!lineObj.hasOwnProperty(key))
+					lineObj[key] = [];
+				lineObj[key].push(val);
+				match = pattern.exec(line);
+			}
+			for (let b in lineObj) {
+				output += b + '=[' + lineObj[b].join(', ') + ']';
+			}
+			console.log(output);
+		}
+	}
+
+	queryStringsMess2([
+		"foo=%20foo&value=+val&foo+=5+%20+203",
+		"foo=poo%20&value=valley&dog=wow+",
+		"url=https://softuni.bg/trainings/coursesinstances/details/1070",
+		"https://softuni.bg/trainings.asp?trainer=nakov&course=oop&course=php"
+	]);
+
+	
+>-----------------------------------------------------------------------<
+
+	function notebook3(input) {
+		let result = {}, output = {};
+		for (let line of input) {
+			let [color, prop, val] = line.split('|');
+			if (!result.hasOwnProperty(color)) {
+				result[color] = {
+					opponents: [],
+					wins: 0,
+					losses: 0
+				};
+			}
+			switch (prop) {
+				case 'age':
+				case 'name': {
+					result[color][prop] = val;
+				} break;
+				case 'win': {
+					result[color]['opponents'].push(val);
+					result[color]['wins'] += 1;
+				} break;
+				case 'loss': {
+					result[color]['opponents'].push(val);
+					result[color]['losses'] += 1;
+				} break;
+			}
+		}
+
+		let sorted = Object.keys(result).sort();
+
+		for (let k of sorted) {
+			// toFixed() връща string
+			let num = ((result[k]['wins'] + 1) / (result[k]['losses'] + 1)).toFixed(2);
+
+			if (!result[k].hasOwnProperty('age') ||
+				!result[k].hasOwnProperty('name')) { continue; }
+			output[k] = {
+				age: result[k]['age'],
+				name: result[k]['name'],
+				opponents: result[k]['opponents'].sort(),
+				rank: num
+			};
+		}
+		console.log(JSON.stringify(output));
+	}
+
+
+notebook([
+    'purple|age|99',
+    'red|age|44',
+'blue|win|pesho',
+    'blue|win|mariya',
+    'purple|loss|Kiko',
+    'purple|loss|Kiko',
+    'purple|loss|Kiko',
+    'purple|loss|Yana',
+    'purple|loss|Yana',
+    'purple|loss|Manov',
+    'purple|loss|Manov',
+    'red|name|gosho',
+    'blue|win|Vladko',
+    'purple|loss|Yana',
+    'purple|name|VladoKaramfilov',
+    'blue|age|21',
+    'blue|loss|Pesho'
+]);
